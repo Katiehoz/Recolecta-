@@ -1,0 +1,299 @@
+/* ==========================================================================
+   Recolecta+ · Empresas y Sedes
+   ========================================================================== */
+
+.empresas-rejilla {
+  display: grid;
+  grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* ---------- Tarjeta de empresa ---------- */
+
+.empresa-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -34px rgba(15, 61, 36, .6);
+}
+
+.empresa-card__cabecera {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0F3D24 0%, #1B6B3A 58%, #2E7D32 100%);
+}
+
+.empresa-card__cabecera::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -70px;
+  right: -50px;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle, rgba(143, 227, 168, .28), rgba(143, 227, 168, 0) 68%);
+  border-radius: 50%;
+}
+
+.empresa-card__logo {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--verde-800);
+  background: var(--blanco);
+  border-radius: 14px;
+  box-shadow: 0 10px 22px -12px rgba(0, 0, 0, .55);
+}
+
+.empresa-card__identidad {
+  min-width: 0;
+}
+
+.empresa-card__identidad h2 {
+  margin: 0;
+  font-size: 1.26rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--blanco);
+}
+
+.empresa-card__identidad p {
+  margin: 3px 0 0;
+  font-size: .76rem;
+  color: rgba(255, 255, 255, .74);
+}
+
+.empresa-card__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  margin-left: auto;
+  padding: 5px 10px;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: #DFF7E6;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: var(--pildora);
+  white-space: nowrap;
+}
+
+.empresa-card__estado > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #8FE3A8;
+  box-shadow: 0 0 0 3px rgba(143, 227, 168, .2);
+}
+
+/* Métricas 2×2 */
+
+.empresa-card__metricas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  flex: 1;
+  margin: 0;
+  padding: 4px 24px 16px;
+}
+
+.metrica {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.metrica:nth-child(odd) {
+  padding-right: 20px;
+  border-right: 1px solid var(--borde);
+}
+
+.metrica:nth-child(even) {
+  padding-left: 20px;
+}
+
+.metrica:nth-child(-n + 2) {
+  border-bottom: 1px solid var(--borde);
+}
+
+.metrica dt {
+  margin: 0 0 5px;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8A9A8F;
+}
+
+.metrica dd {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #1F3A2B;
+  overflow-wrap: anywhere;
+}
+
+.metrica dd b {
+  font-size: 1.06rem;
+  font-weight: 800;
+  color: var(--verde-800);
+  font-variant-numeric: tabular-nums;
+}
+
+.metrica dd span {
+  font-size: .72rem;
+  font-weight: 500;
+  color: #6B7C71;
+}
+
+/* ---------- Tarjeta de sede ---------- */
+
+.sede-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 6px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -34px rgba(15, 61, 36, .6);
+}
+
+.sede-card__cabecera h2 {
+  margin: 0;
+  font-size: 1.04rem;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--verde-900);
+}
+
+.sede-card__cabecera p {
+  margin: 3px 0 0;
+  font-size: .75rem;
+  color: #6B7C71;
+}
+
+.sede-card__icono {
+  display: grid;
+  place-items: center;
+  height: 116px;
+  margin-top: 16px;
+  background:
+    radial-gradient(70% 90% at 50% 120%, rgba(61, 163, 93, .18), rgba(61, 163, 93, 0) 70%),
+    linear-gradient(160deg, #EAF6EC, #F8FCF9);
+  border: 1px solid #DCEFE1;
+  border-radius: 14px;
+}
+
+.sede-card__icono-circulo {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  color: #EAF7EE;
+  background: linear-gradient(140deg, #4BB96B, #1B6B3A);
+  border-radius: 50%;
+  box-shadow:
+    0 16px 28px -16px rgba(20, 83, 45, .85),
+    inset 0 0 0 1px rgba(255, 255, 255, .2);
+}
+
+.sede-card__datos {
+  margin: 8px 0 0;
+}
+
+.sede-card__datos > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.sede-card__datos > div:last-child {
+  border-bottom: 0;
+}
+
+.sede-card__datos dt {
+  flex: none;
+  font-size: .71rem;
+  font-weight: 500;
+  color: #6B7C71;
+}
+
+.sede-card__datos dd {
+  margin: 0;
+  font-size: .78rem;
+  font-weight: 700;
+  color: #2F3E35;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 980px) {
+  .empresas-rejilla { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .empresa-card__cabecera {
+    flex-wrap: wrap;
+    padding: 18px 17px;
+  }
+
+  .empresa-card__logo {
+    width: 46px;
+    height: 46px;
+    font-size: .92rem;
+  }
+
+  .empresa-card__identidad h2 { font-size: 1.12rem; }
+
+  .empresa-card__estado {
+    order: 3;
+    margin-left: 0;
+  }
+
+  .empresa-card__metricas { padding: 2px 17px 12px; }
+
+  .metrica:nth-child(odd) { padding-right: 14px; }
+  .metrica:nth-child(even) { padding-left: 14px; }
+
+  .metrica dd { font-size: .88rem; }
+
+  .sede-card { padding: 18px 17px 4px; }
+
+  .sede-card__icono { height: 100px; }
+}
+
+@media (max-width: 420px) {
+  .sede-card__datos > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .sede-card__datos dd { text-align: left; }
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impacto Ambiental · Recolecta+</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/impacto.css">
+</head>
+<body class="app">
+
+  <!-- ===================== Barra superior ===================== -->
+  <header class="topbar">
+    <button type="button" class="hamburguesa" id="btnMenu" aria-label="Abrir menú" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+
+    <a class="marca" href="panel.html" aria-label="Recolecta+">
+      <span class="marca__icono">
+        <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true">
+          <path d="M25.8 6.2c.6 9-4.2 15.2-11.7 15.2-2.5 0-4.6-1-6-2.6C7.3 11.9 14.2 6.9 25.8 6.2Z" fill="#EAF7EE"/>
+          <path d="M6.4 25.6c-.6-4.9 1.1-9.3 4.9-12" fill="none" stroke="#8FE3A8" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="marca__texto">Recolecta+</span>
+      <span class="marca__pro">PRO</span>
+    </a>
+
+    <span class="contexto">
+      <span class="contexto__punto" aria-hidden="true"></span>
+      Sistema operativo <span class="contexto__sep">•</span> <strong>Zona Central</strong>
+    </span>
+
+    <div class="acciones">
+      <button type="button" class="icono" id="btnAlertas" aria-label="Notificaciones" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/>
+          <path d="M13.7 20a2 2 0 0 1-3.4 0"/>
+        </svg>
+        <span class="alerta-punto" aria-hidden="true"></span>
+      </button>
+
+      <div class="usuario">
+        <span class="usuario__avatar" id="avatar">CT</span>
+        <span class="usuario__datos">
+          <span class="usuario__nombre" id="usuarioNombre">Camila Torres</span>
+          <span class="usuario__cargo" id="usuarioCargo">Directora de Operaciones</span>
+        </span>
+      </div>
+
+      <button type="button" class="icono" id="btnSalir" aria-label="Cerrar sesión" title="Cerrar sesión">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="panel-alertas" id="panelAlertas" hidden>
+      <div class="panel-alertas__cabecera">
+        <strong>Alertas</strong>
+        <span class="etiqueta-nueva">3 nuevas</span>
+      </div>
+      <button type="button" class="alerta" data-alerta="Caneca CN-042 · Parque Industrial Lote 4">
+        <span class="alerta__punto alerta__punto--rojo"></span>
+        <span class="alerta__texto"><strong>Caneca CN-042 al 98%</strong><small>Parque Industrial Lote 4 · hace 4 min</small></span>
+      </button>
+      <button type="button" class="alerta" data-alerta="Caneca CN-017 · Av. Tecnológico 88">
+        <span class="alerta__punto alerta__punto--ambar"></span>
+        <span class="alerta__texto"><strong>Caneca CN-017 al 88%</strong><small>Av. Tecnológico 88 · hace 12 min</small></span>
+      </button>
+      <button type="button" class="alerta" data-alerta="Sensor fuera de línea · CN-009">
+        <span class="alerta__punto alerta__punto--gris"></span>
+        <span class="alerta__texto"><strong>Sensor sin señal</strong><small>CN-009 · Mercedes Abrego · hace 26 min</small></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== Menú lateral ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav" aria-label="Menú principal">
+      <p class="sidebar__titulo">Gestión principal</p>
+
+      <a class="nav-item" href="panel.html" data-modulo="dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/>
+        </svg>
+        <span class="nav-item__texto">Dashboard</span>
+      </a>
+
+      <a class="nav-item" href="rutas.html" data-modulo="rutas">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z"/><path d="M9 4v14M15 6v14"/>
+        </svg>
+        <span class="nav-item__texto">Rutas y Mapa en Vivo</span>
+        <span class="nav-badge">4<small>Activas</small></span>
+      </a>
+
+      <a class="nav-item is-activo" href="impacto.html" data-modulo="impacto" aria-current="page">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20c0-8 5-14 16-15 0 10-6 15-13 15H4Z"/><path d="M8.5 15.5C11 12 14 10 17 9"/>
+        </svg>
+        <span class="nav-item__texto">Impacto Ambiental</span>
+      </a>
+
+      <a class="nav-item" href="flota.html" data-modulo="flota">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+          <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+        </svg>
+        <span class="nav-item__texto">Vehículos y Flota</span>
+      </a>
+
+      <a class="nav-item" href="empresas.html" data-modulo="empresas">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="10" height="18" rx="1.6"/><path d="M13 9h6a1.5 1.5 0 0 1 1.5 1.5V21"/>
+          <path d="M6.5 7h3M6.5 11h3M6.5 15h3"/>
+        </svg>
+        <span class="nav-item__texto">Empresas y Sedes</span>
+      </a>
+
+      <p class="sidebar__titulo sidebar__titulo--sep">Configuración</p>
+
+      <a class="nav-item" href="ajustes.html" data-modulo="ajustes">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.2"/>
+          <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/>
+        </svg>
+        <span class="nav-item__texto">Ajustes</span>
+      </a>
+    </nav>
+
+    <div class="meta">
+      <p class="meta__titulo">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20c0-8 5-14 16-15 0 10-6 15-13 15H4Z"/>
+        </svg>
+        Meta Verde Mensual
+      </p>
+      <div class="meta__barra"><span style="width: 74%"></span></div>
+      <p class="meta__valor">74% · 18,4 t de 25 t aprovechadas</p>
+    </div>
+  </aside>
+
+  <div class="velo" id="velo" hidden></div>
+
+  <!-- ===================== Contenido ===================== -->
+  <main class="contenido">
+    <div class="pagina">
+      <div>
+        <h1>Reporte de Impacto Ambiental</h1>
+        <p>Métricas ESG, balance de carbono y certificado de economía circular.</p>
+      </div>
+      <button type="button" class="btn-exportar" id="btnExportar">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3v12"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4 20h16"/>
+        </svg>
+        Exportar Reporte ESG
+      </button>
+    </div>
+
+    <div class="impacto-rejilla">
+      <!-- Distribución por tipo de residuo -->
+      <section class="card impacto-card" aria-labelledby="tituloDistribucion">
+        <header class="impacto-card__cabecera">
+          <h2 id="tituloDistribucion">Distribución por Tipo de Residuo</h2>
+          <p>Volumen de materiales reciclados durante el último mes (Toneladas)</p>
+        </header>
+
+        <div class="dona">
+          <svg class="dona__lienzo" id="graficoDona" viewBox="0 0 240 240" role="img"
+               aria-label="Distribución de residuos reciclados por tipo durante el último mes">
+            <circle class="dona__pista" cx="120" cy="120" r="88"></circle>
+            <g id="donaSegmentos" transform="rotate(-90 120 120)"></g>
+          </svg>
+          <div class="dona__centro" aria-hidden="true">
+            <strong>84,2</strong>
+            <span>t recicladas</span>
+          </div>
+        </div>
+
+        <ul class="dona-leyenda" id="donaLeyenda" aria-label="Tipos de residuo"></ul>
+
+        <footer class="impacto-card__pie">
+          <span>Total del mes: <strong>84,2 t</strong></span>
+          <span class="impacto-chip">5 corrientes</span>
+        </footer>
+      </section>
+
+      <!-- Tendencia de CO2 -->
+      <section class="card impacto-card" aria-labelledby="tituloCo2">
+        <header class="impacto-card__cabecera">
+          <h2 id="tituloCo2">Tendencia de CO₂ Evitado (2026)</h2>
+          <p>Ahorro acumulado de emisiones en Toneladas métricas de CO₂.</p>
+        </header>
+
+        <div class="tendencia">
+          <svg class="tendencia__lienzo" id="graficoCo2" viewBox="0 0 640 330" role="img"
+               aria-label="Tendencia mensual del CO₂ evitado entre enero y julio de 2026"></svg>
+        </div>
+
+        <footer class="impacto-card__pie">
+          <span><strong>345 t</strong> acumuladas a julio</span>
+          <span class="impacto-chip">Meta 2026 · 500 t</span>
+        </footer>
+      </section>
+    </div>
+
+    <p class="impacto-nota">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r=".7" fill="currentColor"/>
+      </svg>
+      Datos simulados del prototipo. El reporte ESG se calcula con los registros de recolección y telemetría de la zona.
+    </p>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/impacto.js"></script>
+</body>
+</html>

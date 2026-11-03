@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · Recolecta+</title>
+  <meta name="description" content="Plataforma de gestión de residuos inteligentes para Montería. Canecas IoT, rutas optimizadas y ciudadanos comprometidos.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <main class="login">
+
+    <!-- ============ Panel izquierdo (marca) ============ -->
+    <section class="hero" aria-label="Recolecta+">
+      <div class="hero__burbujas" aria-hidden="true">
+        <span class="b1"></span>
+        <span class="b2"></span>
+        <span class="b3"></span>
+        <span class="b4"></span>
+      </div>
+
+      <a class="logo" href="index.html" aria-label="Recolecta+, ir al inicio">
+        <span class="logo__marca">
+          <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" focusable="false">
+            <path d="M25.8 6.2c.6 9-4.2 15.2-11.7 15.2-2.5 0-4.6-1-6-2.6C7.3 11.9 14.2 6.9 25.8 6.2Z" fill="#1B6B3A"/>
+            <path d="M6.4 25.6c-.6-4.9 1.1-9.3 4.9-12" fill="none" stroke="#3DA35D" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="logo__nombre">Recolecta<span>+</span></span>
+      </a>
+
+      <div class="hero__contenido">
+        <p class="hero__eyebrow">Plataforma de gestión</p>
+        <h2 class="hero__titulo">Residuos inteligentes<br>para Montería</h2>
+        <p class="hero__texto">Canecas IoT, rutas optimizadas y ciudadanos comprometidos con el futuro de su ciudad.</p>
+      </div>
+
+      <p class="hero__pie">© 2026 Recolecta+ · Montería, Colombia</p>
+    </section>
+
+    <!-- ============ Panel derecho (formulario) ============ -->
+    <section class="acceso">
+      <div class="acceso__caja">
+        <header class="acceso__cabecera">
+          <h1>Iniciar sesión</h1>
+          <p class="acceso__sub">Selecciona tu tipo de acceso y continúa</p>
+        </header>
+
+        <div class="roles" role="group" aria-label="Tipo de acceso">
+          <button type="button" class="rol is-activo" data-rol="empleado" aria-pressed="true">Empleado</button>
+          <button type="button" class="rol" data-rol="ciudadano" aria-pressed="false">Ciudadano</button>
+        </div>
+
+        <p class="aviso">
+          <span class="aviso__punto" aria-hidden="true"></span>
+          <span id="avisoTexto">Acceso al Panel Urbaser para operadores y administradores</span>
+        </p>
+
+        <form class="formulario" id="formulario" novalidate>
+          <div class="campo" id="campoCorreo">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" inputmode="email"
+                   autocomplete="username" spellcheck="false"
+                   placeholder="operador@urbaser.co" required aria-describedby="errorCorreo">
+            <p class="campo__error" id="errorCorreo" role="alert"></p>
+          </div>
+
+          <div class="campo" id="campoClave">
+            <label for="clave">Contraseña</label>
+            <input id="clave" name="clave" type="password"
+                   autocomplete="current-password"
+                   placeholder="•••••••••" required aria-describedby="errorClave">
+            <p class="campo__error" id="errorClave" role="alert"></p>
+          </div>
+
+          <button type="button" class="olvido" id="olvido">¿Olvidaste tu contraseña?</button>
+
+          <button type="submit" class="btn-entrar" id="btnEntrar">Entrar al Panel Urbaser</button>
+
+          <p class="nota" id="nota" hidden></p>
+
+          <p class="demo">Cuenta de prueba: <strong id="demoCorreo">operador@urbaser.co</strong> · <strong>recolecta123</strong></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

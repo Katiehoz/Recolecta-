@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rutas y Mapa en Vivo · Recolecta+</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/panel.css">
+  <link rel="stylesheet" href="css/rutas.css">
+</head>
+<body class="app">
+
+  <!-- ===================== Barra superior ===================== -->
+  <header class="topbar">
+    <button type="button" class="hamburguesa" id="btnMenu" aria-label="Abrir menú" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+
+    <a class="marca" href="panel.html" aria-label="Recolecta+">
+      <span class="marca__icono">
+        <svg viewBox="0 0 32 32" width="20" height="20" aria-hidden="true">
+          <path d="M25.8 6.2c.6 9-4.2 15.2-11.7 15.2-2.5 0-4.6-1-6-2.6C7.3 11.9 14.2 6.9 25.8 6.2Z" fill="#EAF7EE"/>
+          <path d="M6.4 25.6c-.6-4.9 1.1-9.3 4.9-12" fill="none" stroke="#8FE3A8" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="marca__texto">Recolecta+</span>
+      <span class="marca__pro">PRO</span>
+    </a>
+
+    <span class="contexto">
+      <span class="contexto__punto" aria-hidden="true"></span>
+      Sistema operativo <span class="contexto__sep">•</span> <strong>Zona Central</strong>
+    </span>
+
+    <div class="acciones">
+      <button type="button" class="icono" id="btnAlertas" aria-label="Notificaciones" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/>
+          <path d="M13.7 20a2 2 0 0 1-3.4 0"/>
+        </svg>
+        <span class="alerta-punto" aria-hidden="true"></span>
+      </button>
+
+      <div class="usuario">
+        <span class="usuario__avatar" id="avatar">CT</span>
+        <span class="usuario__datos">
+          <span class="usuario__nombre" id="usuarioNombre">Camila Torres</span>
+          <span class="usuario__cargo" id="usuarioCargo">Directora de Operaciones</span>
+        </span>
+      </div>
+
+      <button type="button" class="icono" id="btnSalir" aria-label="Cerrar sesión" title="Cerrar sesión">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="panel-alertas" id="panelAlertas" hidden>
+      <div class="panel-alertas__cabecera">
+        <strong>Alertas</strong>
+        <span class="etiqueta-nueva">3 nuevas</span>
+      </div>
+      <button type="button" class="alerta" data-alerta="Caneca CN-042 · Parque Industrial Lote 4">
+        <span class="alerta__punto alerta__punto--rojo"></span>
+        <span class="alerta__texto"><strong>Caneca CN-042 al 98%</strong><small>Parque Industrial Lote 4 · hace 4 min</small></span>
+      </button>
+      <button type="button" class="alerta" data-alerta="Caneca CN-017 · Av. Tecnológico 88">
+        <span class="alerta__punto alerta__punto--ambar"></span>
+        <span class="alerta__texto"><strong>Caneca CN-017 al 88%</strong><small>Av. Tecnológico 88 · hace 12 min</small></span>
+      </button>
+      <button type="button" class="alerta" data-alerta="Sensor fuera de línea · CN-009">
+        <span class="alerta__punto alerta__punto--gris"></span>
+        <span class="alerta__texto"><strong>Sensor sin señal</strong><small>CN-009 · Mercedes Abrego · hace 26 min</small></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== Menú lateral ===================== -->
+  <aside class="sidebar" id="sidebar">
+    <nav class="nav" aria-label="Menú principal">
+      <p class="sidebar__titulo">Gestión principal</p>
+
+      <a class="nav-item" href="panel.html" data-modulo="dashboard">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/>
+        </svg>
+        <span class="nav-item__texto">Dashboard</span>
+      </a>
+
+      <button type="button" class="nav-item is-activo" data-modulo="rutas" aria-current="page">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z"/><path d="M9 4v14M15 6v14"/>
+        </svg>
+        <span class="nav-item__texto">Rutas y Mapa en Vivo</span>
+        <span class="nav-badge">4<small>Activas</small></span>
+      </button>
+
+      <a class="nav-item" href="impacto.html" data-modulo="impacto">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20c0-8 5-14 16-15 0 10-6 15-13 15H4Z"/><path d="M8.5 15.5C11 12 14 10 17 9"/>
+        </svg>
+        <span class="nav-item__texto">Impacto Ambiental</span>
+      </a>
+
+      <a class="nav-item" href="flota.html" data-modulo="flota">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+          <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+        </svg>
+        <span class="nav-item__texto">Vehículos y Flota</span>
+      </a>
+
+      <a class="nav-item" href="empresas.html" data-modulo="empresas">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="10" height="18" rx="1.6"/><path d="M13 9h6a1.5 1.5 0 0 1 1.5 1.5V21"/>
+          <path d="M6.5 7h3M6.5 11h3M6.5 15h3"/>
+        </svg>
+        <span class="nav-item__texto">Empresas y Sedes</span>
+      </a>
+
+      <p class="sidebar__titulo sidebar__titulo--sep">Configuración</p>
+
+      <a class="nav-item" href="ajustes.html" data-modulo="ajustes">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.2"/>
+          <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/>
+        </svg>
+        <span class="nav-item__texto">Ajustes</span>
+      </a>
+    </nav>
+
+    <div class="meta">
+      <p class="meta__titulo">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 20c0-8 5-14 16-15 0 10-6 15-13 15H4Z"/>
+        </svg>
+        Meta Verde Mensual
+      </p>
+      <div class="meta__barra"><span style="width: 74%"></span></div>
+      <p class="meta__valor">74% · 18,4 t de 25 t aprovechadas</p>
+    </div>
+  </aside>
+
+  <div class="velo" id="velo" hidden></div>
+
+  <!-- ===================== Contenido ===================== -->
+  <main class="contenido">
+    <div class="pagina">
+      <div>
+        <h1>Monitoreo de Rutas &amp; Mapa Logístico</h1>
+        <p>Rastreo GPS satelital e itinerario de flota de recolección.</p>
+      </div>
+      <div class="actualizacion">
+        <span>Última actualización: <strong id="hace">hace 2 mins</strong></span>
+        <button type="button" class="icono icono--claro" id="btnRefrescar" aria-label="Actualizar datos">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="rutas-rejilla">
+      <!-- Panel de flota -->
+      <section class="flota" aria-labelledby="tituloFlota">
+        <header class="flota__cabecera">
+          <div>
+            <h2 id="tituloFlota">Flota activa en zona <span class="flota__cuenta">(4)</span></h2>
+            <p>Montería · Zona Centro</p>
+          </div>
+          <span class="flota__vivo"><i aria-hidden="true"></i>En vivo</span>
+        </header>
+
+        <div class="flota__lista" id="listaFlota" role="group" aria-label="Unidades de la flota">
+          <button type="button" class="vehiculo is-activo" aria-pressed="true"
+                  data-vehiculo="Camión #04" data-ruta="#R-104" data-zona="Zona Centro"
+                  data-puntos="8" data-completado="65" data-eta="45 min"
+                  data-conductor="Carlos Mendoza" data-corto="C. Mendoza (3.2 T)"
+                  data-carga="3.2 Ton" data-carga-pct="80">
+            <span class="vehiculo__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+                <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+              </svg>
+            </span>
+            <span class="vehiculo__cuerpo">
+              <span class="vehiculo__superior">
+                <span class="vehiculo__nombre">Camión #04 - EV Electric</span>
+                <span class="estado estado--ruta">En Ruta</span>
+              </span>
+              <span class="vehiculo__conductor">Conductor: <strong>Carlos Mendoza</strong></span>
+              <span class="vehiculo__carga">Carga actual: <strong>3.2 Ton</strong> <em>(80% Capacidad)</em></span>
+              <span class="vehiculo__barra"><i style="width: 80%"></i></span>
+            </span>
+          </button>
+
+          <button type="button" class="vehiculo" aria-pressed="false"
+                  data-vehiculo="Camión #02" data-ruta="#R-098" data-zona="Zona Norte"
+                  data-puntos="6" data-completado="45" data-eta="28 min"
+                  data-conductor="Mateo Ríos" data-corto="M. Ríos (1.8 T)"
+                  data-carga="1.8 Ton" data-carga-pct="45">
+            <span class="vehiculo__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+                <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+              </svg>
+            </span>
+            <span class="vehiculo__cuerpo">
+              <span class="vehiculo__superior">
+                <span class="vehiculo__nombre">Camión #02 - Híbrido</span>
+                <span class="estado estado--recogiendo">Recogiendo</span>
+              </span>
+              <span class="vehiculo__conductor">Conductor: <strong>Mateo Ríos</strong></span>
+              <span class="vehiculo__carga">Carga actual: <strong>1.8 Ton</strong> <em>(45% Capacidad)</em></span>
+              <span class="vehiculo__barra"><i style="width: 45%"></i></span>
+            </span>
+          </button>
+
+          <button type="button" class="vehiculo" aria-pressed="false"
+                  data-vehiculo="Unidad #08" data-ruta="#R-102" data-zona="Zona Sur"
+                  data-puntos="4" data-completado="20" data-eta="12 min"
+                  data-conductor="Valeria Gómez" data-corto="V. Gómez (0.4 T)"
+                  data-carga="0.4 Ton" data-carga-pct="20">
+            <span class="vehiculo__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+                <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+              </svg>
+            </span>
+            <span class="vehiculo__cuerpo">
+              <span class="vehiculo__superior">
+                <span class="vehiculo__nombre">Unidad #08 - VAN</span>
+                <span class="estado estado--detenido">Detenido</span>
+              </span>
+              <span class="vehiculo__conductor">Conductor: <strong>Valeria Gómez</strong></span>
+              <span class="vehiculo__carga">Carga actual: <strong>0.4 Ton</strong> <em>(20% Capacidad)</em></span>
+              <span class="vehiculo__barra"><i style="width: 20%"></i></span>
+            </span>
+          </button>
+
+          <button type="button" class="vehiculo" aria-pressed="false"
+                  data-vehiculo="Camión #06" data-ruta="#R-110" data-zona="Zona Oriente"
+                  data-puntos="10" data-completado="30" data-eta="52 min"
+                  data-conductor="Julián Pineda" data-corto="J. Pineda (2.6 T)"
+                  data-carga="2.6 Ton" data-carga-pct="65">
+            <span class="vehiculo__icono" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+                <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+              </svg>
+            </span>
+            <span class="vehiculo__cuerpo">
+              <span class="vehiculo__superior">
+                <span class="vehiculo__nombre">Camión #06 - Diésel</span>
+                <span class="estado estado--ruta">En Ruta</span>
+              </span>
+              <span class="vehiculo__conductor">Conductor: <strong>Julián Pineda</strong></span>
+              <span class="vehiculo__carga">Carga actual: <strong>2.6 Ton</strong> <em>(65% Capacidad)</em></span>
+              <span class="vehiculo__barra"><i style="width: 65%"></i></span>
+            </span>
+          </button>
+        </div>
+
+        <footer class="flota__pie">
+          <span><strong>3</strong> en movimiento · <strong>1</strong> detenida</span>
+          <span class="flota__gps">GPS activo</span>
+        </footer>
+      </section>
+
+      <!-- Mapa -->
+      <section class="rutas-mapa" aria-labelledby="tituloMapaRutas">
+        <h2 class="visualmente-oculto" id="tituloMapaRutas">Mapa de rutas en vivo</h2>
+
+        <svg class="rutas-mapa__lienzo" viewBox="0 0 800 620" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="fondoRutas" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#0E3B26"/>
+              <stop offset=".55" stop-color="#0A2F1F"/>
+              <stop offset="1" stop-color="#061E15"/>
+            </linearGradient>
+            <pattern id="rejillaRutas" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M50 0H0V50" fill="none" stroke="#FFFFFF" stroke-opacity=".04"/>
+            </pattern>
+            <linearGradient id="rioRutas" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#14654A" stop-opacity=".2"/>
+              <stop offset=".5" stop-color="#1B8062" stop-opacity=".55"/>
+              <stop offset="1" stop-color="#14654A" stop-opacity=".2"/>
+            </linearGradient>
+          </defs>
+
+          <rect width="800" height="620" fill="url(#fondoRutas)"/>
+          <rect width="800" height="620" fill="url(#rejillaRutas)"/>
+
+          <!-- Manzanas de la ciudad -->
+          <g fill="#7FD69B" fill-opacity=".045">
+            <rect x="60" y="70" width="86" height="62" rx="6"/>
+            <rect x="170" y="70" width="104" height="62" rx="6"/>
+            <rect x="298" y="70" width="150" height="62" rx="6"/>
+            <rect x="472" y="70" width="70" height="62" rx="6"/>
+            <rect x="566" y="70" width="160" height="62" rx="6"/>
+            <rect x="60" y="156" width="86" height="94" rx="6"/>
+            <rect x="170" y="156" width="104" height="94" rx="6"/>
+            <rect x="298" y="156" width="150" height="94" rx="6"/>
+            <rect x="472" y="156" width="70" height="94" rx="6"/>
+            <rect x="566" y="156" width="160" height="94" rx="6"/>
+            <rect x="60" y="274" width="86" height="118" rx="6"/>
+            <rect x="170" y="274" width="104" height="118" rx="6"/>
+            <rect x="298" y="274" width="150" height="118" rx="6"/>
+            <rect x="472" y="274" width="70" height="118" rx="6"/>
+            <rect x="566" y="274" width="160" height="118" rx="6"/>
+            <rect x="60" y="416" width="86" height="110" rx="6"/>
+            <rect x="170" y="416" width="104" height="110" rx="6"/>
+            <rect x="298" y="416" width="150" height="110" rx="6"/>
+            <rect x="472" y="416" width="70" height="110" rx="6"/>
+            <rect x="566" y="416" width="160" height="110" rx="6"/>
+          </g>
+
+          <!-- Zonas verdes -->
+          <g fill="#7FD69B" fill-opacity=".09">
+            <rect x="486" y="86" width="54" height="42" rx="8"/>
+            <rect x="72" y="428" width="62" height="54" rx="8"/>
+            <rect x="640" y="300" width="72" height="60" rx="10"/>
+          </g>
+
+          <!-- Avenidas -->
+          <g stroke="#FFFFFF" stroke-opacity=".075" stroke-width="10" stroke-linecap="round">
+            <path d="M-20 240H820"/>
+            <path d="M-20 400H820"/>
+            <path d="M278 -20V640"/>
+            <path d="M456 -20V640"/>
+            <path d="M640 -20V640"/>
+          </g>
+
+          <!-- Calles secundarias -->
+          <g stroke="#FFFFFF" stroke-opacity=".032" stroke-width="2">
+            <path d="M-20 130H820"/><path d="M-20 310H820"/><path d="M-20 540H820"/>
+            <path d="M56 -20V640"/><path d="M156 -20V640"/><path d="M366 -20V640"/><path d="M546 -20V640"/><path d="M730 -20V640"/>
+          </g>
+
+          <!-- Río Sinú -->
+          <path d="M-20 585C140 552 250 606 400 588S620 540 820 572"
+                fill="none" stroke="url(#rioRutas)" stroke-width="30" stroke-linecap="round"/>
+
+          <!-- Halo de la ruta -->
+          <path id="rutaHalo" d="M 95 500 C 130 430 150 370 185 305 C 215 335 260 350 300 345 C 340 340 365 325 390 310 C 430 285 470 280 505 300 C 545 325 565 380 590 430 C 597 443 604 450 612 458"
+                fill="none" stroke="#7FD69B" stroke-opacity=".16" stroke-width="12"
+                stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+
+          <!-- Ruta activa -->
+          <path id="rutaTrazado" d="M 95 500 C 130 430 150 370 185 305 C 215 335 260 350 300 345 C 340 340 365 325 390 310 C 430 285 470 280 505 300 C 545 325 565 380 590 430 C 597 443 604 450 612 458"
+                fill="none" stroke="#7FD69B" stroke-opacity=".85" stroke-width="2.8"
+                stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 9"
+                vector-effect="non-scaling-stroke"/>
+
+          <!-- Puntos de recolección -->
+          <g fill="#7FD69B">
+            <circle cx="95" cy="500" r="4.5"/>
+            <circle cx="135" cy="425" r="4.5"/>
+            <circle cx="160" cy="355" r="4.5"/>
+            <circle cx="185" cy="305" r="4.5"/>
+            <circle cx="255" cy="348" r="4.5"/>
+          </g>
+          <g fill="#061E15" stroke="#7FD69B" stroke-width="2" stroke-opacity=".8">
+            <circle cx="330" cy="340" r="4.5"/>
+            <circle cx="460" cy="292" r="4.5"/>
+            <circle cx="612" cy="458" r="4.5"/>
+          </g>
+        </svg>
+
+        <span class="rutas-mapa__chip"><span aria-hidden="true"></span>4 vehículos rastreados</span>
+
+        <!-- Pin: Hotel Central -->
+        <div class="marca-mapa marca-mapa--punto" style="left: 23.1%; top: 49.2%">
+          <span class="marca-mapa__punto" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 21V5.5A1.5 1.5 0 0 1 5.5 4h9A1.5 1.5 0 0 1 16 5.5V21"/>
+              <path d="M16 10h3.5A1.5 1.5 0 0 1 21 11.5V21"/><path d="M2.5 21h19"/>
+              <path d="M7.5 8h1.5M11.5 8h1.5M7.5 12h1.5M11.5 12h1.5M7.5 16h1.5M11.5 16h1.5"/>
+            </svg>
+          </span>
+          <span class="marca-mapa__etiqueta">Hotel Central</span>
+        </div>
+
+        <!-- Pin: vehículo seleccionado -->
+        <div class="marca-mapa marca-mapa--vehiculo" style="left: 48.8%; top: 50%">
+          <span class="marca-mapa__etiqueta" id="pinConductor">C. Mendoza (3.2 T)</span>
+          <span class="marca-mapa__punto marca-mapa__punto--vehiculo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+              <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Pin: Eco-Plaza Norte -->
+        <div class="marca-mapa marca-mapa--punto marca-mapa--eco" style="left: 76.5%; top: 73.9%">
+          <span class="marca-mapa__punto" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21v-6"/><path d="M12 15c-4 0-7-2.5-7-6 4 0 7 2.5 7 6Z"/>
+              <path d="M12 15c0-4.5 3-7.5 8-8 0 4.5-3 8-8 8Z"/>
+            </svg>
+          </span>
+          <span class="marca-mapa__etiqueta">Eco-Plaza Norte</span>
+        </div>
+
+        <!-- Tarjeta de ruta seleccionada -->
+        <div class="ruta-info" id="rutaInfo">
+          <div class="ruta-info__cabecera">
+            <strong id="rutaNombre">Ruta Seleccionada: #R-104</strong>
+            <span class="ruta-info__zona" id="rutaZona">Zona Centro</span>
+          </div>
+          <p id="rutaDetalle">Mostrando recorrido de Camión #04. <b id="rutaPuntos">8 puntos programados.</b></p>
+          <div class="ruta-info__barra"><i id="rutaProgreso" style="width: 65%"></i></div>
+          <div class="ruta-info__pie">
+            <span>Completado: <strong id="rutaCompletado">65%</strong></span>
+            <span>ETA: <strong id="rutaEta">45 min</strong></span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Alertas de canecas -->
+    <section class="alertas-operativas" aria-labelledby="tituloAlertas">
+      <header class="alertas-operativas__cabecera">
+        <div>
+          <h2 id="tituloAlertas">Alertas operativas</h2>
+          <p>Canecas que requieren intervención en la zona</p>
+        </div>
+        <span class="alertas-operativas__cuenta" id="cuentaAlertas">3 activas</span>
+      </header>
+
+      <div class="alertas-operativas__lista" id="listaAlertas"></div>
+    </section>
+  </main>
+
+  <!-- ===================== Ficha: programar recolección ===================== -->
+  <dialog class="ficha" id="fichaProgramar" aria-labelledby="fichaTitulo">
+    <header class="ficha__cabecera">
+      <div class="ficha__cabecera-texto">
+        <p class="ficha__kicker">Programar intervención</p>
+        <h2 id="fichaTitulo">Ficha de recolección <span>(expandida)</span></h2>
+      </div>
+      <span class="ficha__id" id="fichaId">C-01</span>
+      <button type="button" class="ficha__cerrar" id="fichaCerrar" aria-label="Cerrar ficha">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="ficha__cuerpo">
+      <div class="ficha__alerta ficha__alerta--critica" id="fichaAlerta">
+        <div class="ficha__alerta-superior">
+          <span class="nivel nivel--critica" id="fichaNivel">Crítica</span>
+          <time class="ficha__alerta-hora" id="fichaHora">12:43</time>
+        </div>
+        <p id="fichaResumen">Caneca C-01 al 92% — Intervención inmediata</p>
+        <small id="fichaSector">Sector: Centro</small>
+      </div>
+
+      <section class="ficha__seccion">
+        <h3>Ubicación y contexto</h3>
+        <p class="ficha__ubicacion">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>
+          </svg>
+          <strong id="fichaDireccion">Calle 10, Sector Centro</strong>
+        </p>
+
+        <div class="ficha__foto">
+          <span class="ficha__foto-marco" aria-hidden="true">
+            <svg viewBox="0 0 48 48" width="38" height="38" fill="none">
+              <path d="M9 12h30" stroke="#14532D" stroke-width="3" stroke-linecap="round"/>
+              <path d="M18 12V9h12v3" stroke="#14532D" stroke-width="3" stroke-linecap="round"/>
+              <rect x="12" y="14" width="24" height="30" rx="5" fill="#3DA35D"/>
+              <path d="M20 22v14M24 22v14M28 22v14" stroke="#CBEBD6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="ficha__foto-texto">
+            <strong>Foto de caneca</strong>
+            <small>Última captura · hace 6 min</small>
+          </span>
+        </div>
+
+        <dl class="ficha__datos">
+          <div>
+            <dt>Accesibilidad</dt>
+            <dd id="fichaAccesibilidad">Alta (vía principal)</dd>
+          </div>
+          <div>
+            <dt>Historial reciente</dt>
+            <dd id="fichaHistorial">Última colecta: 2 días</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="ficha__seccion ficha__seccion--ruta">
+        <div class="ficha__seccion-cabecera">
+          <h3>Ruta recomendada <small>(opt.)</small></h3>
+          <span class="ficha__chip-ruta" id="fichaChipRuta">RUTA 1 · Optimizada</span>
+        </div>
+
+        <p class="ficha__ruta-nombre" id="fichaRutaNombre">R-1 · Ruta Centro Norte</p>
+
+        <dl class="ficha__ruta-datos">
+          <div>
+            <dt>ETA inicio</dt>
+            <dd id="fichaEta">14:30</dd>
+          </div>
+          <div>
+            <dt>Vehículo</dt>
+            <dd id="fichaVehiculo">URB-041</dd>
+          </div>
+          <div>
+            <dt>Operador</dt>
+            <dd id="fichaOperador">Carlos Mendoza</dd>
+          </div>
+          <div>
+            <dt>Tiempo adicional</dt>
+            <dd id="fichaExtra">+15 min</dd>
+          </div>
+          <div class="ficha__carga">
+            <dt>Carga actual del vehículo</dt>
+            <dd>
+              <span class="ficha__carga-valor" id="fichaCarga">35%</span>
+              <span class="ficha__carga-barra"><i id="fichaCargaBarra" style="width: 35%"></i></span>
+            </dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="ficha__seccion">
+        <h3>Recursos y equipamiento</h3>
+        <dl class="ficha__datos">
+          <div>
+            <dt>Tipo de residuo</dt>
+            <dd id="fichaResiduo">Orgánicos</dd>
+          </div>
+          <div>
+            <dt>Equipo requerido</dt>
+            <dd id="fichaEquipo">Camión compactador</dd>
+          </div>
+          <div>
+            <dt>Personal de apoyo</dt>
+            <dd id="fichaApoyo">Asistente 1: Andrés Pérez</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="ficha__aviso">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.3 4.2 2.6 18a1.9 1.9 0 0 0 1.7 2.8h15.4a1.9 1.9 0 0 0 1.7-2.8L13.7 4.2a1.9 1.9 0 0 0-3.4 0Z"/>
+          <path d="M12 9v4.5"/><circle cx="12" cy="17" r=".6" fill="currentColor"/>
+        </svg>
+        <p>
+          <strong>Alerta operativa</strong>
+          <span id="fichaTrafico">Tráfico alto detectado en Sector Centro</span>
+        </p>
+      </div>
+
+      <section class="ficha__seccion">
+        <h3>Acciones y notificaciones</h3>
+        <div class="ficha__checks">
+          <label><input type="checkbox" checked> Notificar a conductor y asistente</label>
+          <label><input type="checkbox" checked> Actualizar ruta en GPS</label>
+          <label><input type="checkbox" checked> Registrar en historial de servicio</label>
+          <label><input type="checkbox" checked> Reasignar ruta</label>
+        </div>
+      </section>
+    </div>
+
+    <footer class="ficha__pie">
+      <div class="ficha__acciones">
+        <button type="button" class="ficha__btn ficha__btn--primario" id="fichaConfirmar">Confirmar programación</button>
+        <button type="button" class="ficha__btn" id="fichaVerRuta">Ver ruta</button>
+        <button type="button" class="ficha__btn" id="fichaReasignar">Reasignar</button>
+      </div>
+      <div class="ficha__info">
+        <span>
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8"/>
+          </svg>
+          Eficiencia (ruta &amp; telemetría)
+        </span>
+        <span class="ficha__logo">Recolecta<strong>+</strong></span>
+      </div>
+    </footer>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/rutas.js"></script>
+</body>
+</html>
