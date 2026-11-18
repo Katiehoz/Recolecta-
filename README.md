@@ -172,19 +172,21 @@ Luego visita <http://127.0.0.1:8123>.
   520 px con esquinas redondeadas; en móvil ocupa toda la pantalla.
 - **Cabecera oscura** con marca Recolecta+, insignia **Nivel Oro** y avatar que abre
   el menú de la cuenta (nombre, correo y cerrar sesión).
-- **Bienvenida con puntos**: saludo personalizado desde la sesión, `1.480` Puntos
-  Verdes, `+120 pts esta semana` y botón **Canjear**.
+- **Bienvenida con puntos**: saludo personalizado desde la sesión, saldo de Puntos
+  Verdes leído de `recolecta.puntos` (para que los canjes de Premios se descuenten
+  también aquí), `+120 pts esta semana` y botón **Canjear**.
 - **Recolección activa**: tarjeta oscura con etiqueta pulsante, `Recolector a ~8 min
   de tu casa` y `Carlos Mendoza • Camión Eco-04`.
-- **Programar recolección**: CTA principal y botón flotante `+` abren un diálogo con
-  material, dirección (validada), día y franja horaria. Al confirmar se muestra el
-  estado de la solicitud en la tarjeta y un aviso flotante.
+- **Programar recolección**: la opción del menú de la cuenta abre un diálogo con
+  material, dirección (validada), día y franja horaria. Al confirmar se muestra un
+  aviso flotante. La tarjeta "¿Tienes reciclaje listo?" ya no aparece en el inicio.
 - **Acciones rápidas**: tarjetas de **Escanear código** (abre un escáner simulado
   que suma 25 Puntos Verdes y registra la actividad) y **Canjear**.
 - **Actividad reciente**: lista con los últimos movimientos de puntos
   (`+25`, `+20`, `+15`) y su fecha; cada escaneo añade una fila nueva arriba.
-- **Navegación inferior**: Inicio, Rastreo (abre `rastreo.html`), botón central,
-  Premios y Mi Impacto; los módulos pendientes avisan que llegarán pronto.
+- **Navegación inferior**: Inicio, Rastreo (abre `rastreo.html`), Educación (abre
+  `educacion.html`), Premios (abre `premios.html`) y Mi Impacto (abre
+  `mi-impacto.html`). El antiguo botón central `+` ya no existe.
 - Cada página valida el rol: un empleado que abra `ciudadano.html` vuelve al panel.
 
 ### Rastreo en tiempo real (`rastreo.html`)
@@ -192,10 +194,8 @@ Luego visita <http://127.0.0.1:8123>.
 - **Encabezado de la orden**: `Rastreo en tiempo real`, `Orden activa #REC-9042`
   y chip pulsante **En camino**.
 - **Mapa simulado** en verde oscuro con cuadrícula, ruta punteada y pines del
-  camión y de tu casa, más la píldora `Recolector · 8 min`.
-- **Tarjeta del recolector** superpuesta al mapa: Carlos Mendoza y una nota que
-  invita a tocar una caneca en **Alerta** o **Lleno** para reportarla (sin llegada
-  estimada, sin llamada y sin descripción del vehículo).
+  camión y de tu casa, más la píldora `Recolector · 8 min`. Es lo único que se
+  muestra en la sección del mapa: no hay tarjeta superpuesta del recolector.
 - **Canecas de tu ruta** (`C-01` alerta 92%, `C-07` lleno 78%, `C-12` normal 45%,
   `C-19` normal 31%): solo las canecas en estado crítico o lleno (`C-01` y `C-07`)
   son paneles expandibles; al tocarlas muestran el botón **Reportar caneca**. Las
@@ -207,8 +207,95 @@ Luego visita <http://127.0.0.1:8123>.
   (`REP-2481`, `REP-2482`…), la caneca queda marcada como reportada y el reporte
   aparece en **Solicitudes de Recolección** del panel de Urbaser como pendiente.
 - **Estado del pedido** con tres pasos.
-- El botón central `+` vuelve a `ciudadano.html?nueva=1`, que abre directamente el
-  diálogo de programación de recolección.
+- La opción **Programar recolección** del menú de la cuenta vuelve a
+  `ciudadano.html?nueva=1`, que abre directamente el diálogo de programación.
+
+### Catálogo de Recompensas (`premios.html`)
+
+- Misma app ciudadana de 520 px, con **Premios** activo en la navegación inferior.
+- Cabecera `Catálogo de Recompensas` y saldo de Puntos Verdes arriba.
+- Lista vertical de cuatro recompensas, con el mismo orden y datos de la referencia:
+  **Cupón $10.000 EcoMarket** (500 pts), **Recarga Transporte Público** (800 pts),
+  **Planta Nativa + Maceta Eco** (350 pts) y **Adopta & Planta un Árbol** (1.000 pts).
+- Cada fila lleva un icono verde a la izquierda, título/descripción/costo en el centro
+  y botón **Canjear** a la derecha; los colores son los del proyecto (`--verde-*`).
+- El canje es simulado: descuenta los puntos, guarda `recolecta.puntos` y
+  `recolecta.canjes`, muestra un aviso y deja el botón como **Canjeado**. Si no hay
+  puntos suficientes, avisa sin descontar. El saldo se comparte con el inicio, así
+  que el descuento se ve también en la tarjeta de bienvenida y en los escaneos
+  suman puntos al mismo almacenamiento.
+- **Mis cupones**: al canjear aparece un apartado de comprobantes con el nombre de
+  la recompensa, el costo, la fecha, un código (`CUP-2481`, `CUP-2482`…), el estado
+  **Lista para reclamar** y una franja de código de barras. La sección se oculta
+  cuando aún no hay canjes y se llena de forma persistente al recargar la página.
+
+### Mi Impacto (`mi-impacto.html`)
+
+- Misma app ciudadana de 520 px, con **Mi Impacto** activo en la navegación inferior.
+- Encabezado `Tu Impacto Ecológico`, subtítulo `Estadísticas de reciclaje en tu hogar`
+  y distintivo del año `2026`.
+- Dos indicadores: `42.5 Kg reciclados` y `98 Kg CO₂ evitado`.
+- Gráfico de barras `Reciclaje Mensual (Kg)` con Mayo, Junio, Julio, Agosto, Sept y
+  Oct, ejes vertical y horizontal, y barras en verde del proyecto.
+- `Historial reciente` con movimientos de PET & Cartón y Vidrio & Latas, su fecha y
+  los puntos ganados. Los colores son siempre los de `--verde-*`; no se usan los de
+  la imagen de referencia.
+
+### Educación (`educacion.html`)
+
+- El antiguo botón central `+` de la navegación inferior se sustituyó por el enlace
+  **Educación**, con un icono de libro y la misma paleta verde del proyecto.
+- Cabecera verde oscura con `Bienvenida, María García` y `Montería, Córdoba`,
+  seguida del título `Módulos educativos` y `Aprende y gana puntos verdes`.
+- Tres módulos con icono, barra de progreso, estado, puntos y duración:
+  `Clasificación de residuos sólidos` (Completado, 15 pts, 8 min),
+  `Impacto ambiental del reciclaje` (60% completado, 6 pts, 12 min) y
+  `Economía circular en Montería` (Sin iniciar, 15 pts, 10 min).
+- El módulo `Clasificación de residuos sólidos` tiene un botón **Abrir
+  cuestionario** que muestra un diálogo con 5 pasos y 15 puntos en total:
+  1. `¿Qué beneficio genera directamente el reciclaje?` con las opciones
+     `Aumenta los residuos`, `Reduce el uso de materias primas` y
+     `Mezcla los materiales`. Al acertar aparece `Respuesta correcta. Ya puedes
+     completar el módulo.` y el botón `Completar módulo` (5 pts).
+  2. `¿Qué material puede reciclarse una y otra vez sin perder calidad?`
+     (vidrio, 4 pts).
+  3. `¿Por qué conviene enjuagar los envases antes de reciclarlos?` (evitar
+    olores y facilitar el reciclaje, 3 pts).
+  4. `¿Cuál de estos residuos se considera orgánico?` (resto de comida, 3 pts).
+  5. Reflexión `Llévalo a tu vida diaria` con el campo `Tu reflexión` y la nota
+     `Esta respuesta forma parte de la simulación y no será almacenada.`
+     El botón `Continuar` lleva a un resumen y `Finalizar` guarda el puntaje.
+- El módulo `Impacto ambiental del reciclaje` también tiene **Abrir
+  cuestionario**, con 4 pasos y 6 puntos en total:
+  1. `¿Cómo ayuda el reciclaje a reducir la deforestación?` (menos papel nuevo,
+     2 pts).
+  2. `¿Qué recurso se ahorra principalmente al reciclar aluminio?` (energía,
+     2 pts).
+  3. `¿Qué puede ocurrir si la materia orgánica llega a un relleno sanitario?`
+     (biogás y lixiviados, 2 pts).
+  4. Reflexión sobre una acción para reducir la huella de carbono, con el mismo
+     campo `Tu reflexión`, la nota de simulación y el botón `Continuar`.
+- El módulo `Economía circular en Montería` también tiene **Abrir
+  cuestionario**, con 5 pasos y 15 puntos en total:
+  1. `¿Qué significa "economía circular"?` (reducir, reutilizar y reciclar,
+     4 pts).
+  2. `¿Qué beneficio tiene procesar el reciclaje en Montería?` (menos transporte
+     y emisiones, 4 pts).
+  3. `¿Cuál es un ejemplo de economía circular en la ciudad?` (compostar restos
+     de comida, 4 pts).
+  4. `¿Qué se prioriza antes de reciclar en la economía circular?` (reducir y
+     reutilizar, 3 pts).
+  5. Reflexión sobre darle una segunda vida a un objeto en casa, con el mismo
+     campo `Tu reflexión` y el botón `Continuar`.
+- Cada módulo usa el mismo diálogo y el mismo motor de preguntas; la cabecera
+  muestra el nombre del módulo activo.
+- Los puntos se suman una sola vez por módulo a `recolecta.puntos` (claves de
+  control `recolecta.educacion.clasificacion`, `recolecta.educacion.impacto` y
+  `recolecta.educacion.economia`),
+  compartida con el inicio y Premios.
+- Se conserva el `Tip del día` al final de la pantalla.
+- El menú de la cuenta mantiene **Programar recolección** para no perder el acceso
+  directo al diálogo del inicio.
 
 ## Estructura
 
@@ -222,6 +309,9 @@ empresas.html        Empresas y Sedes (Empleado)
 ajustes.html         Ajustes de Plataforma (Empleado)
 ciudadano.html       App ciudadana: inicio con puntos y recolección
 rastreo.html         App ciudadana: rastreo en tiempo real y reporte de canecas
+educacion.html       App ciudadana: módulos educativos y Tip del día
+premios.html         App ciudadana: catálogo y canje de recompensas
+mi-impacto.html      App ciudadana: estadísticas e historial de reciclaje
 css/estilos.css      Sistema de diseño compartido y login
 css/panel.css        Estilos del panel operativo
 css/rutas.css        Estilos de la pantalla de rutas
@@ -231,6 +321,9 @@ css/empresas.css     Estilos de la empresa y la sede operativa
 css/ajustes.css      Estilos de ajustes, interruptores y diálogos
 css/ciudadano.css    Estilos de la app ciudadana móvil
 css/rastreo.css      Estilos del mapa, la orden y las canecas del rastreo
+css/educacion.css    Estilos de las guías de educación ambiental
+css/premios.css      Estilos del catálogo de recompensas
+css/mi-impacto.css   Estilos de las estadísticas ciudadanas
 js/login.js          Autenticación del prototipo
 js/dashboard.js      Datos, filtros y acciones del panel
 js/rutas.js          Flota, selección de ruta, alertas y ficha de programación
@@ -240,6 +333,9 @@ js/empresas.js       Sesión, alertas y navegación de empresas y sedes
 js/ajustes.js        Perfil, preferencias, notificaciones y diálogos de ajustes
 js/ciudadano.js      Puntos, solicitudes y navegación de la app ciudadana
 js/rastreo.js        Seguimiento del recolector, reportes de caneca y sesión
+js/educacion.js      Sesión y cuenta de la pantalla de educación
+js/premios.js        Puntos, canjes y sesión del catálogo de recompensas
+js/mi-impacto.js     Sesión y cuenta de la pantalla de impacto ciudadano
 assets/favicon.svg   Isotipo de Recolecta+
 ```
 
@@ -248,7 +344,7 @@ assets/favicon.svg   Isotipo de Recolecta+
 1. Módulo de rutas con mapa real (Leaflet + OpenStreetMap) y optimización de recorridos.
 2. Simulador de sensores IoT para alimentar el nivel de llenado de cada caneca.
 3. Detalle de caneca: nivel, batería, señal, temperatura y última lectura.
-4. Vista ciudadana completa: puntos, canjes, educación ambiental y mapa de canecas.
+4. Mapa de canecas dentro de la app ciudadana.
 5. Backend con roles reales (Alcaldía, Urbaser, ciudadanía).
 #   R e c o l e c t a -  
  

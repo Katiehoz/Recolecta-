@@ -41,8 +41,8 @@
     menuNombre: document.getElementById("menuNombre"),
     menuCorreo: document.getElementById("menuCorreo"),
     btnSalir: document.getElementById("btnSalir"),
+    btnMenuProgramar: document.getElementById("btnMenuProgramar"),
 
-    navItems: Array.prototype.slice.call(document.querySelectorAll("[data-vista]")),
 
     dlgReporte: document.getElementById("dlgReporte"),
     dlgReporteBajada: document.getElementById("dlgReporteBajada"),
@@ -129,6 +129,10 @@
 
   document.addEventListener("click", function () {
     if (menuAbierto) abrirMenu(false);
+  });
+
+  el.btnMenuProgramar.addEventListener("click", function () {
+    window.location.href = "ciudadano.html?nueva=1";
   });
 
   el.btnSalir.addEventListener("click", function () {
@@ -342,19 +346,6 @@
 
     el.reporteComentarios.value = "";
     el.reporteTipo.selectedIndex = 0;
-  });
-
-  /* --------------------------------------------------------- navegación baja */
-
-  var AVISOS_VISTA = {
-    premios: "El catálogo de premios y canjes estará disponible muy pronto.",
-    impacto: "Tu impacto ambiental detallado estará disponible muy pronto."
-  };
-
-  el.navItems.forEach(function (boton) {
-    boton.addEventListener("click", function () {
-      avisar(AVISOS_VISTA[boton.dataset.vista] || "Este módulo estará disponible muy pronto.");
-    });
   });
 
   /* ------------------------------------------------------------------ teclado */

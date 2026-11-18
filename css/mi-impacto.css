@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Recolecta+ · Mi Impacto (app ciudadana)
+   Misma paleta verde del proyecto; distribución basada en la referencia.
+   ========================================================================== */
+
+.im-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 2px 2px;
+}
+
+.im-cabecera h1 {
+  margin: 0 0 4px;
+  font-size: clamp(1.28rem, 5vw, 1.55rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1.15;
+  color: var(--verde-950);
+}
+
+.im-cabecera p {
+  margin: 0;
+  font-size: .76rem;
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+.im-anio {
+  flex: none;
+  margin-top: 2px;
+  padding: 5px 10px;
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--verde-800);
+  background: var(--verde-100);
+  border: 1px solid var(--borde);
+  border-radius: var(--pildora);
+}
+
+/* ---------- Indicadores ---------- */
+
+.im-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.im-stat {
+  padding: 13px 6px 11px;
+  text-align: center;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: 0 18px 34px -34px rgba(10, 43, 24, .9);
+}
+
+.im-stat__valor {
+  display: block;
+  font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: 1.1;
+}
+
+.im-stat__valor--principal { color: var(--verde-950); }
+.im-stat__valor--terciario { color: var(--verde-600); }
+
+.im-stat__etiqueta {
+  display: block;
+  margin-top: 5px;
+  font-size: .53rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+/* ---------- Tarjetas ---------- */
+
+.im-tarjeta {
+  padding: 14px 14px 12px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: 0 18px 34px -34px rgba(10, 43, 24, .9);
+}
+
+.im-tarjeta h2 {
+  margin: 0 0 12px;
+  font-size: .86rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--verde-950);
+}
+
+/* ---------- Gráfico mensual ---------- */
+
+.im-chart {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  height: 178px;
+}
+
+.im-eje {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: .58rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #8A9A8F;
+}
+
+.im-barras {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.im-barras::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--borde) 0 1px,
+    transparent 1px 20%
+  );
+  opacity: .72;
+  pointer-events: none;
+}
+
+.im-barra {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  height: var(--altura);
+  min-width: 0;
+  background: linear-gradient(180deg, var(--verde-500), var(--verde-700));
+  border-radius: 8px 8px 3px 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+.im-meses {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.im-meses__nombres {
+  display: flex;
+  gap: 8px;
+}
+
+.im-meses__nombres span {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: .55rem;
+  font-weight: 600;
+  color: #8A9A8F;
+  white-space: nowrap;
+}
+
+/* ---------- Historial ---------- */
+
+.im-historial h2 {
+  font-size: .67rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--verde-800);
+}
+
+.im-historial__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.im-movimiento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.im-movimiento:first-child {
+  padding-top: 2px;
+  border-top: 0;
+}
+
+.im-movimiento__icono {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  color: var(--verde-700);
+  background: var(--verde-50);
+  border: 1px solid var(--borde);
+  border-radius: 11px;
+}
+
+.im-movimiento__icono--vidrio {
+  color: var(--verde-600);
+  background: var(--verde-100);
+}
+
+.im-movimiento__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.im-movimiento__texto strong {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--verde-950);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.im-movimiento__texto small {
+  font-size: .62rem;
+  color: var(--texto-suave);
+}
+
+.im-movimiento__puntos {
+  flex: none;
+  margin-left: auto;
+  font-size: .76rem;
+  font-weight: 800;
+  color: var(--verde-700);
+  white-space: nowrap;
+}
+
+.im-movimiento__puntos small {
+  font-size: .58rem;
+  font-weight: 700;
+}
+
+@media (max-width: 370px) {
+  .im-anio { padding: 4px 8px; font-size: .66rem; }
+  .im-stat { padding: 11px 4px 9px; }
+  .im-stat__etiqueta { font-size: .49rem; }
+  .im-tarjeta { padding: 12px 11px 10px; }
+  .im-chart { height: 158px; }
+  .im-barras, .im-meses__nombres { gap: 6px; }
+  .im-meses__nombres span { font-size: .5rem; }
+  .im-movimiento { gap: 8px; }
+  .im-movimiento__icono { width: 32px; height: 32px; }
+  .im-movimiento__texto strong { font-size: .7rem; }
+}

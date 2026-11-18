@@ -127,115 +127,6 @@
   animation: rsLatido 2.4s ease-in-out infinite;
 }
 
-/* ---------- Tarjeta del recolector ---------- */
-
-.rs-conductor {
-  position: relative;
-  z-index: 2;
-  margin: -56px 12px 0;
-  padding: 12px 14px 13px;
-  color: var(--blanco);
-  background:
-    radial-gradient(110% 150% at 100% 0%, rgba(75, 185, 107, .22), rgba(75, 185, 107, 0) 62%),
-    linear-gradient(160deg, #123D26, #0A2B18);
-  border: 1px solid rgba(143, 227, 168, .24);
-  border-radius: 18px;
-  box-shadow: 0 26px 40px -30px rgba(10, 43, 24, 1);
-}
-
-.rs-conductor__fila {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-}
-
-.rs-conductor__avatar {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  font-size: .72rem;
-  font-weight: 800;
-  letter-spacing: .02em;
-  color: #EAF7EE;
-  background: linear-gradient(150deg, #4BB96B, #2E7D32);
-  border: 1.5px solid rgba(255, 255, 255, .34);
-  border-radius: 50%;
-}
-
-.rs-conductor__datos {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.rs-conductor__datos strong {
-  font-size: .88rem;
-  font-weight: 700;
-  letter-spacing: -.01em;
-  line-height: 1.25;
-}
-
-.rs-conductor__datos small {
-  font-size: .66rem;
-  color: #A6C1B0;
-}
-
-.rs-conductor__live {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex: none;
-  margin-left: auto;
-  padding: 4px 9px;
-  font-size: .55rem;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: #B7E7C6;
-  background: rgba(143, 227, 168, .12);
-  border: 1px solid rgba(143, 227, 168, .26);
-  border-radius: var(--pildora);
-  white-space: nowrap;
-}
-
-.rs-conductor__live i {
-  width: 5px;
-  height: 5px;
-  flex: none;
-  background: #8FE3A8;
-  border-radius: 50%;
-  animation: rsLatido 2.4s ease-in-out infinite;
-}
-
-.rs-conductor__nota {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  margin: 11px 0 0;
-  padding: 9px 11px;
-  font-size: .64rem;
-  font-weight: 500;
-  line-height: 1.45;
-  color: #B7E7C6;
-  background: rgba(143, 227, 168, .1);
-  border: 1px dashed rgba(143, 227, 168, .32);
-  border-radius: 10px;
-}
-
-.rs-conductor__nota svg {
-  flex: none;
-  margin-top: 1px;
-  color: #8FE3A8;
-}
-
-.rs-conductor__nota strong {
-  font-weight: 800;
-  color: #EAF7EE;
-}
-
 /* ---------- Estado del pedido ---------- */
 
 .rs-estado {
@@ -655,8 +546,7 @@
 
 /* ---------- Navegación (enlaces) ---------- */
 
-a.cz-nav__item,
-a.cz-fab {
+a.cz-nav__item {
   text-decoration: none;
 }
 
@@ -762,7 +652,6 @@ a.cz-fab {
 @media (prefers-reduced-motion: reduce) {
   .rs-chip i,
   .rs-mapa__pill i,
-  .rs-conductor__live i,
   .rs-pasos li.is-actual .rs-pasos__punto i,
   .rs-caneca__acciones,
   .rs-caneca__reportada { animation: none; }
@@ -773,16 +662,11 @@ a.cz-fab {
   .rs-cabecera h1 { font-size: .94rem; }
   .rs-chip { padding: 5px 9px; font-size: .55rem; }
   .rs-mapa { height: 208px; border-radius: 20px; }
-  .rs-conductor { margin: -52px 9px 0; padding: 11px 12px 12px; }
-  .rs-conductor__avatar { width: 36px; height: 36px; font-size: .66rem; }
-  .rs-conductor__datos strong { font-size: .82rem; }
-  .rs-conductor__live { padding: 3px 8px; font-size: .5rem; }
   .rs-caneca__panel { gap: 9px; padding: 11px 11px 10px; }
   .rs-caneca--normal { gap: 9px; padding: 11px 11px 10px; }
   .rs-caneca__acciones { padding: 0 11px 11px; }
   .rs-reportar { padding: 9px 12px; font-size: .7rem; }
   .rs-estado { padding: 13px 14px 12px; }
-  .rs-caneca { gap: 9px; padding: 11px 11px 10px; }
   .rs-caneca__icono { width: 34px; height: 34px; border-radius: 10px; }
   .rs-caneca__fila strong { font-size: .74rem; }
   .rs-badge { padding: 3px 7px; font-size: .5rem; }
@@ -797,7 +681,6 @@ a.cz-fab {
   .rs-cabecera { flex-direction: column; align-items: flex-start; gap: 8px; }
   .rs-chip { align-self: flex-start; }
   .rs-mapa { height: 190px; }
-  .rs-conductor__live { display: none; }
   .rs-caneca__icono { width: 31px; height: 31px; }
   .rs-caneca__fila strong { font-size: .71rem; }
   .rs-badge { font-size: .47rem; letter-spacing: .04em; }

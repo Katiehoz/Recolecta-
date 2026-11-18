@@ -46,6 +46,13 @@
           <div class="cz-menu" id="menuUsuario" hidden>
             <p class="cz-menu__nombre" id="menuNombre">Andrés Villalba</p>
             <p class="cz-menu__correo" id="menuCorreo">ciudadano@recolecta.co</p>
+            <button type="button" class="cz-menu__accion" id="btnMenuProgramar">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3.5" y="5" width="17" height="15" rx="2.5"/>
+                <path d="M8 3.5v3M16 3.5v3M3.5 10h17"/><path d="M12 13v5M9.5 15.5h5"/>
+              </svg>
+              Programar recolección
+            </button>
             <button type="button" class="cz-menu__salir" id="btnSalir">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -111,32 +118,6 @@
           </svg>
         </span>
       </button>
-
-      <!-- Programar recolección -->
-      <section class="cz-cta" aria-labelledby="ctaTitulo">
-        <span class="cz-cta__icono" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M7 19H4.8a1.8 1.8 0 0 1-1.6-.9 1.8 1.8 0 0 1 0-1.8L7.2 9.5"/>
-            <path d="M11 19h8.2a1.8 1.8 0 0 0 1.6-.9 1.8 1.8 0 0 0 0-1.8l-1.2-2.1"/>
-            <path d="m14 16-3 3 3 3"/>
-            <path d="M8.3 13.6 7.2 9.5 3.1 10.6"/>
-            <path d="m9.3 5.8 1.1-1.9a1.8 1.8 0 0 1 1.6-.9 1.8 1.8 0 0 1 1.5.9l3.9 6.8"/>
-            <path d="m13.4 9.6 4.1 1.1 1.1-4.1"/>
-          </svg>
-        </span>
-
-        <h2 id="ctaTitulo">¿Tienes reciclaje listo?</h2>
-        <p>Programa la recogida en la puerta de tu hogar y acumula Puntos Verdes.</p>
-
-        <p class="cz-cta__estado" id="estadoSolicitud" hidden></p>
-
-        <button type="button" class="cz-btn-primario" id="btnProgramar">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-          <span id="btnProgramarTexto">Programar Recolección Ahora</span>
-        </button>
-      </section>
 
       <!-- Acciones rápidas -->
       <section class="cz-acciones" aria-labelledby="accionesTitulo">
@@ -273,13 +254,17 @@
         Rastreo
       </a>
 
-      <button type="button" class="cz-fab" id="btnFab" aria-label="Programar recolección">
-        <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
-          <path d="M12 5v14M5 12h14"/>
-        </svg>
-      </button>
+      <a class="cz-nav__item" href="educacion.html">
+        <span class="cz-nav__icono">
+          <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 6.2C10 4.8 7.4 4.3 4 4.6v12.2c3.4-.3 6 .2 8 1.6 2-1.4 4.6-1.9 8-1.6V4.6c-3.4-.3-6 .2-8 1.6Z"/>
+            <path d="M12 6.2V18.4"/><path d="M6.5 8.4c1.7 0 3.1.3 4.2 1M17.5 8.4c-1.7 0-3.1.3-4.2 1"/>
+          </svg>
+        </span>
+        Educación
+      </a>
 
-      <button type="button" class="cz-nav__item" data-vista="premios">
+      <a class="cz-nav__item" href="premios.html">
         <span class="cz-nav__icono">
           <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="8.6"/>
@@ -288,16 +273,16 @@
           </svg>
         </span>
         Premios
-      </button>
+      </a>
 
-      <button type="button" class="cz-nav__item" data-vista="impacto">
+      <a class="cz-nav__item" href="mi-impacto.html">
         <span class="cz-nav__icono">
           <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M13.2 2.8 5.6 13.4h5.2L10.4 21l7.8-10.8h-5.2l.2-7.4Z"/>
           </svg>
         </span>
         Mi Impacto
-      </button>
+      </a>
     </nav>
 
     <div class="cz-toast" id="toast" role="status" aria-live="polite"></div>

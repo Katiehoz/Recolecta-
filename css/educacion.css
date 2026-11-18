@@ -1,0 +1,425 @@
+/* ==========================================================================
+   Recolecta+ · Educación (app ciudadana)
+   Módulos educativos con la paleta verde del proyecto (variables --verde-*).
+   ========================================================================== */
+
+.ed-bienvenida {
+  padding: 16px 16px 15px;
+  background: linear-gradient(135deg, var(--verde-900), var(--verde-700));
+  border: 1px solid var(--verde-800);
+  border-radius: 18px;
+  box-shadow: 0 20px 34px -30px rgba(10, 43, 24, .9);
+}
+
+.ed-bienvenida__saludo {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+  color: var(--blanco);
+}
+
+.ed-bienvenida__lugar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 6px 0 0;
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--verde-100);
+}
+
+/* ---------- Título de la sección ---------- */
+
+.ed-titulo h1 {
+  margin: 2px 2px 3px;
+  font-size: clamp(1.2rem, 5vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--verde-950);
+}
+
+.ed-titulo p {
+  margin: 0 2px;
+  font-size: .74rem;
+  line-height: 1.4;
+  color: var(--texto-suave);
+}
+
+/* ---------- Módulos educativos ---------- */
+
+.ed-modulos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ed-modulo {
+  padding: 13px 14px 12px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: 0 18px 34px -34px rgba(10, 43, 24, .9);
+}
+
+.ed-modulo__fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ed-modulo__icono {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  color: var(--verde-700);
+  background: var(--verde-100);
+  border-radius: 10px;
+}
+
+.ed-modulo--nuevo .ed-modulo__icono {
+  color: var(--texto-suave);
+  background: var(--verde-50);
+}
+
+.ed-modulo__titulo {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: .8rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+  color: var(--verde-950);
+}
+
+.ed-modulo__puntos {
+  flex: none;
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--verde-700);
+  white-space: nowrap;
+}
+
+.ed-modulo__puntos small {
+  font-size: .6rem;
+  font-weight: 700;
+}
+
+.ed-modulo__barra {
+  height: 9px;
+  margin: 12px 0 10px;
+  overflow: hidden;
+  background: var(--borde);
+  border-radius: var(--pildora);
+}
+
+.ed-modulo__avance {
+  display: block;
+  width: var(--avance);
+  height: 100%;
+  background: linear-gradient(90deg, var(--verde-500), var(--verde-600));
+  border-radius: inherit;
+}
+
+.ed-modulo__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ed-modulo__estado,
+.ed-modulo__tiempo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .66rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+
+.ed-modulo__estado--listo { color: var(--verde-700); }
+.ed-modulo__estado--progreso { color: var(--verde-600); }
+
+/* ---------- Acción para abrir el cuestionario ---------- */
+
+.ed-modulo__accion {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--verde-700);
+  background: var(--verde-50);
+  border: 1px solid var(--borde);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.ed-modulo__accion:hover {
+  background: var(--verde-100);
+  border-color: var(--verde-300);
+}
+
+.ed-modulo__accion:focus-visible {
+  outline: 3px solid var(--verde-300);
+  outline-offset: 2px;
+}
+
+.ed-modulo__accion-flecha { margin-left: auto; }
+
+/* ---------- Cuestionario ---------- */
+
+.ed-quiz { width: min(440px, calc(100vw - 28px)); }
+
+.ed-quiz__cuerpo {
+  padding-top: 16px;
+  padding-bottom: 12px;
+}
+
+.ed-quiz__enunciado {
+  margin: 0 0 14px;
+  font-size: .92rem;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  color: var(--verde-950);
+}
+
+.ed-quiz__opciones {
+  display: grid;
+  gap: 9px;
+}
+
+.ed-quiz__opcion {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--texto);
+  background: var(--blanco);
+  border: 1.5px solid var(--borde);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.ed-quiz__opcion:hover {
+  background: var(--verde-50);
+  border-color: var(--verde-300);
+}
+
+.ed-quiz__opcion:focus-visible {
+  outline: 3px solid var(--verde-300);
+  outline-offset: 2px;
+}
+
+.ed-quiz__letra {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--verde-700);
+  background: var(--verde-50);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+
+.ed-quiz__texto { flex: 1; line-height: 1.35; }
+
+.ed-quiz__opcion.is-seleccionada {
+  background: var(--verde-50);
+  border-color: var(--verde-500);
+}
+
+.ed-quiz__opcion.is-correcta {
+  background: var(--verde-100);
+  border-color: var(--verde-600);
+}
+
+.ed-quiz__opcion.is-incorrecta {
+  background: #FDF3F2;
+  border-color: var(--error);
+}
+
+.ed-quiz__opcion.is-correcta .ed-quiz__letra {
+  color: var(--blanco);
+  background: var(--verde-600);
+  border-color: var(--verde-600);
+}
+
+.ed-quiz__opcion.is-incorrecta .ed-quiz__letra {
+  color: var(--blanco);
+  background: var(--error);
+  border-color: var(--error);
+}
+
+.ed-quiz__feedback {
+  margin: 12px 0 2px;
+  padding: 9px 11px;
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.4;
+  border-radius: 10px;
+}
+
+.ed-quiz__feedback[hidden] { display: none; }
+
+.ed-quiz__feedback.is-correcta {
+  color: var(--verde-800);
+  background: var(--verde-50);
+  border: 1px solid var(--verde-300);
+}
+
+.ed-quiz__feedback.is-incorrecta {
+  color: var(--error);
+  background: #FDF3F2;
+  border: 1px solid #E7A29B;
+}
+
+/* ---------- Reflexión ---------- */
+
+.ed-quiz__reflexion-titulo {
+  margin: 0 0 6px;
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--verde-950);
+}
+
+.ed-quiz__reflexion-texto {
+  margin: 0 0 16px;
+  font-size: .76rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.ed-quiz__textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: .78rem;
+  line-height: 1.45;
+  color: var(--texto);
+  background: var(--verde-50);
+  border: 1.5px solid var(--borde);
+  border-radius: 11px;
+  resize: vertical;
+  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+.ed-quiz__textarea::placeholder { color: #8A9A8F; }
+
+.ed-quiz__textarea:hover { border-color: #C6DECC; }
+
+.ed-quiz__textarea:focus {
+  outline: none;
+  background: var(--blanco);
+  border-color: var(--verde-500);
+  box-shadow: 0 0 0 4px rgba(61, 163, 93, .16);
+}
+
+/* ---------- Resumen ---------- */
+
+.ed-quiz__resumen {
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.ed-quiz__resumen-icono {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 12px;
+  color: var(--blanco);
+  background: linear-gradient(180deg, var(--verde-500), var(--verde-700));
+  border-radius: 50%;
+}
+
+.ed-quiz__resumen h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--verde-950);
+}
+
+.ed-quiz__resumen p {
+  margin: 0 0 6px;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.ed-quiz__resumen strong { color: var(--verde-700); }
+
+.ed-quiz__resumen-nota { font-size: .7rem !important; }
+
+/* ---------- Tip del día (se conserva) ---------- */
+
+.ed-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 14px;
+  background: var(--verde-50);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+}
+
+.ed-tip__icono {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  color: var(--verde-700);
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.ed-tip h2 {
+  margin: 1px 0 3px;
+  font-size: .76rem;
+  font-weight: 800;
+  color: var(--verde-900);
+}
+
+.ed-tip p {
+  margin: 0;
+  font-size: .69rem;
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+@media (max-width: 370px) {
+  .ed-bienvenida { padding: 14px 13px 13px; }
+  .ed-bienvenida__saludo { font-size: .95rem; }
+  .ed-modulo { padding: 12px 11px 11px; }
+  .ed-modulo__titulo { font-size: .75rem; }
+  .ed-modulo__icono { width: 31px; height: 31px; }
+  .ed-modulo__estado, .ed-modulo__tiempo { font-size: .62rem; }
+  .ed-modulo__accion { font-size: .68rem; }
+  .ed-quiz__enunciado { font-size: .84rem; }
+  .ed-quiz__opcion { font-size: .73rem; padding: 10px; }
+  .ed-quiz__letra { width: 24px; height: 24px; }
+}

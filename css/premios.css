@@ -1,0 +1,348 @@
+/* ==========================================================================
+   Recolecta+ · Catálogo de Recompensas
+   Misma paleta verde del proyecto; el layout sigue la referencia adjunta.
+   ========================================================================== */
+
+.pr-cabecera {
+  padding: 11px 2px 4px;
+}
+
+.pr-kicker {
+  margin: 0 0 3px;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--verde-600);
+}
+
+.pr-cabecera h1 {
+  margin: 0 0 6px;
+  font-size: clamp(1.28rem, 5vw, 1.55rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1.15;
+  color: var(--verde-950);
+}
+
+.pr-cabecera > p:last-child {
+  margin: 0;
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.pr-cabecera > p strong {
+  font-weight: 800;
+  color: var(--verde-700);
+}
+
+.pr-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.pr-recompensa {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: 0 18px 34px -34px rgba(10, 43, 24, .9);
+  transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+
+.pr-recompensa:hover {
+  border-color: var(--verde-300);
+  box-shadow: 0 20px 36px -30px rgba(10, 43, 24, .6);
+  transform: translateY(-1px);
+}
+
+.pr-icono {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  flex: none;
+  color: var(--verde-700);
+  border: 1px solid var(--borde);
+  border-radius: 15px;
+}
+
+.pr-icono--cupon { background: var(--verde-50); }
+.pr-icono--transporte { background: #EDF6F8; }
+.pr-icono--planta { background: #E9F6EC; }
+.pr-icono--arbol { background: var(--verde-100); }
+
+.pr-info {
+  min-width: 0;
+}
+
+.pr-info h2 {
+  margin: 0 0 3px;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+  color: var(--verde-950);
+}
+
+.pr-info p {
+  margin: 0 0 5px;
+  font-size: .69rem;
+  line-height: 1.35;
+  color: var(--texto-suave);
+}
+
+.pr-costo {
+  display: inline-flex;
+  align-items: center;
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--verde-800);
+}
+
+.pr-costo strong {
+  margin-right: 4px;
+  font-size: .78rem;
+  font-weight: 800;
+  color: var(--verde-700);
+}
+
+.pr-canjear {
+  flex: none;
+  min-width: 78px;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--blanco);
+  background: linear-gradient(180deg, var(--verde-500), var(--verde-700));
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 12px 22px -14px rgba(20, 83, 45, .95);
+  cursor: pointer;
+  transition: filter .16s ease, transform .16s ease;
+}
+
+.pr-canjear:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.pr-canjear:focus-visible {
+  outline: 3px solid var(--verde-300);
+  outline-offset: 2px;
+}
+
+.pr-canjear:disabled {
+  color: var(--verde-700);
+  background: var(--verde-100);
+  border: 1px solid var(--verde-300);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* ---------- Cupones / comprobantes de canje ---------- */
+
+.pr-recibos {
+  padding: 0 0 6px;
+}
+
+.pr-recibos[hidden] { display: none; }
+
+.pr-recibos__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 4px 2px 8px;
+}
+
+.pr-recibos__cabecera h2 {
+  margin: 0;
+  font-size: .92rem;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.25;
+  color: var(--verde-950);
+}
+
+.pr-recibos__cantidad {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  flex: none;
+  padding: 0 7px;
+  font-size: .72rem;
+  font-weight: 800;
+  color: var(--blanco);
+  background: var(--verde-700);
+  border-radius: var(--pildora);
+}
+
+.pr-recibos__nota {
+  margin: 0 2px 10px;
+  font-size: .68rem;
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+.pr-recibos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pr-recibo {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 13px 11px;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  box-shadow: 0 18px 34px -34px rgba(10, 43, 24, .9);
+}
+
+.pr-recibo::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--verde-500), var(--verde-700));
+}
+
+.pr-recibo__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pr-recibo__sello {
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--verde-700);
+}
+
+.pr-recibo__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  padding: 4px 8px;
+  font-size: .56rem;
+  font-weight: 800;
+  color: var(--verde-800);
+  background: var(--verde-50);
+  border: 1px solid var(--borde);
+  border-radius: var(--pildora);
+  white-space: nowrap;
+}
+
+.pr-recibo__estado i {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  background: var(--verde-500);
+  border-radius: 50%;
+}
+
+.pr-recibo__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 9px 0 8px;
+}
+
+.pr-recibo__datos strong {
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--verde-950);
+}
+
+.pr-recibo__datos span {
+  font-size: .67rem;
+  color: var(--texto-suave);
+}
+
+.pr-recibo__separador {
+  height: 0;
+  margin: 0 0 9px;
+  border-top: 1px dashed var(--verde-300);
+}
+
+.pr-recibo__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pr-recibo__codigo {
+  font-size: .64rem;
+  color: var(--texto-suave);
+}
+
+.pr-recibo__codigo strong {
+  margin-left: 3px;
+  font-size: .72rem;
+  letter-spacing: .05em;
+  color: var(--verde-800);
+}
+
+.pr-recibo__barras {
+  width: 62px;
+  height: 22px;
+  flex: none;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--verde-900) 0 2px,
+    transparent 2px 4px,
+    var(--verde-900) 4px 5px,
+    transparent 5px 8px
+  );
+  opacity: .82;
+}
+
+@media (max-width: 370px) {
+  .pr-recibo { padding: 11px 11px 10px; }
+  .pr-recibo__sello { font-size: .53rem; }
+  .pr-recibo__estado { font-size: .52rem; padding: 3px 7px; }
+  .pr-recibo__barras { width: 52px; height: 20px; }
+
+  .pr-recompensa {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .pr-icono {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+  }
+
+  .pr-icono svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .pr-canjear {
+    grid-column: 2;
+    justify-self: start;
+    min-width: 86px;
+    padding: 8px 14px;
+  }
+}

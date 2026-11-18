@@ -7,8 +7,26 @@
   "use strict";
 
   var CLAVE_SESION = "recolecta.sesion";
-  var PUNTOS = 1480;
+  var CLAVE_PUNTOS = "recolecta.puntos";
+  var PUNTOS_INICIALES = 1480;
   var PUNTOS_SEMANA = 120;
+
+  function leerPuntos() {
+    try {
+      var raw = localStorage.getItem(CLAVE_PUNTOS);
+
+      if (raw === null || raw === "") {
+        return PUNTOS_INICIALES;
+      }
+
+      var valor = Number(raw);
+      return isFinite(valor) && valor >= 0 ? valor : PUNTOS_INICIALES;
+    } catch (error) {
+      return PUNTOS_INICIALES;
+    }
+  }
+
+  var PUNTOS = leerPuntos();
 
   /* ------------------------------------------------------------------ sesión */
 
@@ -48,14 +66,11 @@
     btnCanjear: document.getElementById("btnCanjear"),
     btnTarjetaCanjear: document.getElementById("btnTarjetaCanjear"),
     btnActiva: document.getElementById("btnActiva"),
-    btnProgramar: document.getElementById("btnProgramar"),
-    btnProgramarTexto: document.getElementById("btnProgramarTexto"),
-    estadoSolicitud: document.getElementById("estadoSolicitud"),
 
     btnEscanear: document.getElementById("btnEscanear"),
     listaActividad: document.getElementById("listaActividad"),
 
-    btnFab: document.getElementById("btnFab"),
+    btnMenuProgramar: document.getElementById("btnMenuProgramar"),
     navItems: Array.prototype.slice.call(document.querySelectorAll("[data-vista]")),
 
     dlgReco: document.getElementById("dlgRecoleccion"),
@@ -216,8 +231,7 @@
     return true;
   }
 
-  el.btnProgramar.addEventListener("click", abrirRecoleccion);
-  el.btnFab.addEventListener("click", abrirRecoleccion);
+  el.btnMenuProgramar.addEventListener("click", abrirRecoleccion);
   el.dlgRecoCerrar.addEventListener("click", function () { cerrarDialogo(el.dlgReco); });
   el.dlgRecoCancelar.addEventListener("click", function () { cerrarDialogo(el.dlgReco); });
 
@@ -227,13 +241,8 @@
     evento.preventDefault();
     if (!validarRecoleccion()) return;
 
-    var material = el.recoMaterial.value;
     var dia = capitalizar(el.recoDia.value);
     var franja = el.recoFranja.value;
-
-    el.estadoSolicitud.hidden = false;
-    el.estadoSolicitud.textContent = "Programada · " + dia + " · " + franja + " · " + material;
-    el.btnProgramarTexto.textContent = "Programar otra recolección";
 
     cerrarDialogo(el.dlgReco);
     avisar("Recolección programada: " + el.recoDia.value + " · " + franja);
@@ -272,6 +281,12 @@
     PUNTOS_SEMANA += cantidad;
     el.puntos.textContent = miles(PUNTOS);
     el.puntosSemana.textContent = "+" + miles(PUNTOS_SEMANA) + " pts esta semana";
+
+    try {
+      localStorage.setItem(CLAVE_PUNTOS, String(PUNTOS));
+    } catch (error) {
+      /* El prototipo sigue funcionando aunque el almacenamiento esté lleno. */
+    }
   }
 
   function agregarActividad(titulo, cuando, puntos, icono) {
@@ -339,28 +354,18 @@
 
   /* --------------------------------------------------------- navegación baja */
 
-  var AVISOS_VISTA = {
-    premios: "El catálogo de premios y canjes estará disponible muy pronto.",
-    impacto: "Tu impacto ambiental detallado estará disponible muy pronto."
-  };
-
   el.navItems.forEach(function (boton) {
     boton.addEventListener("click", function () {
-      var vista = boton.dataset.vista;
-
-      if (vista === "inicio") {
+      if (boton.dataset.vista === "inicio") {
         el.lienzo.scrollTo({ top: 0, behavior: "smooth" });
-        return;
       }
-
-      avisar(AVISOS_VISTA[vista] || "Este módulo estará disponible muy pronto.");
     });
   });
 
   /* -------------------------------------------------------------- otros CTA */
 
   function avisarCanje() {
-    avisar("Tienes " + miles(PUNTOS) + " Puntos Verdes. El catálogo de premios estará disponible muy pronto.");
+    window.location.href = "premios.html";
   }
 
   el.btnCanjear.addEventListener("click", avisarCanje);
