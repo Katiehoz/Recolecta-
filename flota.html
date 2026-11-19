@@ -160,13 +160,53 @@
         <h1>Vehículos y Flota</h1>
         <p>Estado, asignación y mantenimiento de las unidades operativas.</p>
       </div>
-      <span class="flota-contador">
+      <span class="flota-contador" id="flotaContador">
         <span class="flota-contador__punto" aria-hidden="true"></span>
-        <strong>4</strong> unidades · 2 en ruta 
+        <strong id="flotaTotal">4</strong> unidades · <span id="flotaEnRuta">2</span> en ruta
       </span>
     </div>
 
+    <div class="flota-herramientas" role="search" aria-label="Buscar y filtrar vehículos">
+      <label class="flota-buscar" for="busquedaVehiculo">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>
+        </svg>
+        <input type="search" id="busquedaVehiculo" placeholder="Buscar por código, conductor, ruta o tipo..." autocomplete="off">
+      </label>
+
+      <label class="flota-filtro">
+        <span class="sr-only">Filtrar por estado</span>
+        <select id="filtroEstado" aria-label="Filtrar por estado">
+          <option value="todos">Todos los estados</option>
+          <option value="ruta">En ruta</option>
+          <option value="disponible">Disponible</option>
+          <option value="mantenimiento">Mantenimiento</option>
+        </select>
+      </label>
+
+      <label class="flota-filtro">
+        <span class="sr-only">Filtrar por tipo</span>
+        <select id="filtroTipo" aria-label="Filtrar por tipo de vehículo">
+          <option value="todos">Todos los tipos</option>
+          <option value="Camión compactador">Camión compactador</option>
+          <option value="Volqueta recolectora">Volqueta recolectora</option>
+          <option value="Camión de apoyo">Camión de apoyo</option>
+        </select>
+      </label>
+
+      <button type="button" class="flota-btn-agregar" id="btnAgregarVehiculo">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Agregar vehículo
+      </button>
+    </div>
+
+    <p class="flota-resultado" id="flotaResultado" hidden aria-live="polite"></p>
+
     <section class="flota-rejilla" id="flotaRejilla" aria-label="Vehículos de la flota"></section>
+
+    <p class="flota-vacio" id="flotaVacio" hidden>No se encontraron vehículos con los filtros seleccionados.</p>
   </main>
 
   <!-- ===================== Ficha del vehículo ===================== -->
@@ -303,10 +343,159 @@
     <footer class="vehiculo-ficha__pie">
       <p>Datos simulados del prototipo · Zona Central</p>
       <div class="vehiculo-ficha__acciones">
+        <button type="button" class="vf-btn" id="fichaEditar">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-6"/>
+            <path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5Z"/>
+          </svg>
+          Editar
+        </button>
         <button type="button" class="vf-btn" id="fichaVerRuta">Ver ruta completa</button>
         <button type="button" class="vf-btn vf-btn--primario" id="fichaCerrarPie">Cerrar ficha</button>
       </div>
     </footer>
+  </dialog>
+
+  <!-- ===================== Formulario de vehículo ===================== -->
+  <dialog class="vehiculo-ficha flota-form" id="dlgVehiculo" aria-labelledby="dlgVehiculoTitulo">
+    <form id="frmVehiculo" novalidate>
+      <header class="vehiculo-ficha__cabecera">
+        <span class="vehiculo-ficha__icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7h11v9H3z"/><path d="M14 10h3.5l3.5 3.5V16h-7z"/>
+            <circle cx="7" cy="18" r="1.7"/><circle cx="17" cy="18" r="1.7"/>
+          </svg>
+        </span>
+
+        <div class="vehiculo-ficha__identidad">
+          <p class="vehiculo-ficha__kicker" id="dlgVehiculoKicker">Nuevo vehículo</p>
+          <h2 id="dlgVehiculoTitulo">Agregar vehículo</h2>
+        </div>
+
+        <button type="button" class="vehiculo-ficha__cerrar" id="dlgVehiculoCerrar" aria-label="Cerrar formulario">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="vehiculo-ficha__cuerpo flota-form__cuerpo">
+        <section class="vf-bloque flota-form__seccion" aria-labelledby="frmIdentTitulo">
+          <h3 id="frmIdentTitulo">Identificación y estado</h3>
+          <div class="flota-form__grid">
+            <div class="ff-campo">
+              <label for="vId">Código del vehículo</label>
+              <input type="text" id="vId" name="id" placeholder="Ej. URB-041" required>
+              <span class="ff-error" id="errorVId"></span>
+            </div>
+            <div class="ff-campo">
+              <label for="vTipo">Tipo de vehículo</label>
+              <select id="vTipo" name="tipo" required>
+                <option value="">Selecciona un tipo</option>
+                <option value="Camión compactador">Camión compactador</option>
+                <option value="Volqueta recolectora">Volqueta recolectora</option>
+                <option value="Camión de apoyo">Camión de apoyo</option>
+              </select>
+            </div>
+            <div class="ff-campo">
+              <label for="vEstado">Estatus</label>
+              <select id="vEstado" name="estado" required>
+                <option value="ruta">EN RUTA</option>
+                <option value="disponible">DISPONIBLE</option>
+                <option value="mantenimiento">MANTENIMIENTO</option>
+              </select>
+            </div>
+            <div class="ff-campo">
+              <label for="vCombustible">Combustible (%)</label>
+              <input type="number" id="vCombustible" name="combustible" min="0" max="100" step="1" value="100">
+            </div>
+            <div class="ff-campo">
+              <label for="vConductor">Conductor</label>
+              <input type="text" id="vConductor" name="conductor" placeholder="Nombre del conductor">
+            </div>
+            <div class="ff-campo">
+              <label for="vUbicacion">Ubicación / ruta</label>
+              <input type="text" id="vUbicacion" name="ubicacion" placeholder="Ej. R-1 · Centro Norte">
+            </div>
+          </div>
+        </section>
+
+        <section class="vf-bloque flota-form__seccion" aria-labelledby="frmRutaTitulo">
+          <h3 id="frmRutaTitulo">Ruta actual</h3>
+          <div class="flota-form__grid">
+            <div class="ff-campo ff-campo--ancho">
+              <label for="vRuta">Nombre de ruta</label>
+              <input type="text" id="vRuta" name="ruta" placeholder="Ej. R-1: Centro Norte">
+            </div>
+            <div class="ff-campo">
+              <label for="vUltima">Última parada</label>
+              <input type="text" id="vUltima" name="ultima" placeholder="Ej. Calle 10, #34-12">
+            </div>
+            <div class="ff-campo">
+              <label for="vProxima">Próxima parada</label>
+              <input type="text" id="vProxima" name="proxima" placeholder="Ej. Parque Central">
+            </div>
+            <div class="ff-campo">
+              <label for="vProgreso">Progreso de ruta (%)</label>
+              <input type="number" id="vProgreso" name="progreso" min="0" max="100" step="1" value="0">
+            </div>
+          </div>
+        </section>
+
+        <section class="vf-bloque flota-form__seccion" aria-labelledby="frmOpTitulo">
+          <h3 id="frmOpTitulo">Operativo</h3>
+          <div class="flota-form__grid">
+            <div class="ff-campo">
+              <label for="vOperador">Conductor asignado</label>
+              <input type="text" id="vOperador" name="operador" placeholder="Nombre del conductor asignado">
+            </div>
+            <div class="ff-campo">
+              <label for="vAsistente">Asistente</label>
+              <input type="text" id="vAsistente" name="asistente" placeholder="Nombre del asistente">
+            </div>
+            <div class="ff-campo">
+              <label for="vHorario">Horario</label>
+              <input type="text" id="vHorario" name="horario" placeholder="Ej. 6:00 - 14:00">
+            </div>
+          </div>
+        </section>
+
+        <section class="vf-bloque flota-form__seccion" aria-labelledby="frmMantTitulo">
+          <h3 id="frmMantTitulo">Mantenimiento</h3>
+          <div class="flota-form__grid">
+            <div class="ff-campo">
+              <label for="vMantEstado">Estado general</label>
+              <select id="vMantEstado" name="mantEstado">
+                <option value="Óptimo">Óptimo</option>
+                <option value="En revisión">En revisión</option>
+              </select>
+            </div>
+            <div class="ff-campo ff-campo--ancho">
+              <label for="vUltimoMant">Último mantenimiento</label>
+              <input type="text" id="vUltimoMant" name="ultimoMant" placeholder="Ej. 10/10/2026 · Preventivo · Aceite y filtros">
+            </div>
+            <div class="ff-campo ff-campo--ancho">
+              <label for="vProximoMant">Próximo mantenimiento</label>
+              <input type="text" id="vProximoMant" name="proximoMant" placeholder="Ej. Estimado en 1500 km">
+            </div>
+            <div class="ff-campo ff-campo--check">
+              <label class="ff-check">
+                <input type="checkbox" id="vPuedeProgramar" name="puedeProgramar" checked>
+                <span>Permitir programar mantenimiento</span>
+              </label>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="vehiculo-ficha__pie">
+        <p>Completa los datos del vehículo tal como se muestran en la ficha.</p>
+        <div class="vehiculo-ficha__acciones">
+          <button type="button" class="vf-btn" id="dlgVehiculoCancelar">Cancelar</button>
+          <button type="submit" class="vf-btn vf-btn--primario" id="dlgVehiculoGuardar">Guardar vehículo</button>
+        </div>
+      </footer>
+    </form>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

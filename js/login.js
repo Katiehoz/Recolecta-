@@ -8,6 +8,7 @@
   "use strict";
 
   var CLAVE_SESION = "recolecta.sesion";
+  var CLAVE_CUENTAS = "recolecta.cuentas";
 
   var CUENTAS = {
     empleado: {
@@ -47,10 +48,58 @@
     boton: document.getElementById("btnEntrar"),
     olvido: document.getElementById("olvido"),
     nota: document.getElementById("nota"),
-    demoCorreo: document.getElementById("demoCorreo")
+    demoCorreo: document.getElementById("demoCorreo"),
+    btnCrearCuenta: document.getElementById("btnCrearCuenta"),
+    dlgCuenta: document.getElementById("dlgCuenta"),
+    formCuenta: document.getElementById("formCuenta"),
+    dlgCuentaKicker: document.getElementById("dlgCuentaKicker"),
+    dlgCuentaTitulo: document.getElementById("dlgCuentaTitulo"),
+    dlgCuentaCerrar: document.getElementById("dlgCuentaCerrar"),
+    dlgCuentaCancelar: document.getElementById("dlgCuentaCancelar"),
+    camposCuenta: document.getElementById("camposCuenta"),
+    cuentaClave: document.getElementById("cuentaClave"),
+    campoCuentaClave: document.getElementById("campoCuentaClave"),
+    errorCuentaClave: document.getElementById("errorCuentaClave")
   };
 
   var rolActivo = "empleado";
+
+  /* --------------------------------------------------------- cuentas guardadas */
+
+  function leerCuentas() {
+    try {
+      var datos = JSON.parse(localStorage.getItem(CLAVE_CUENTAS));
+      return Array.isArray(datos) ? datos : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function guardarCuentas(cuentas) {
+    try {
+      localStorage.setItem(CLAVE_CUENTAS, JSON.stringify(cuentas));
+    } catch (error) {
+      /* sin almacenamiento disponible */
+    }
+  }
+
+  function buscarCuentaRegistrada(rol, correo) {
+    var correoNormal = correo.trim().toLowerCase();
+    var cuentas = leerCuentas();
+
+    for (var i = 0; i < cuentas.length; i++) {
+      if (cuentas[i].rol === rol && String(cuentas[i].correo || "").toLowerCase() === correoNormal) {
+        return cuentas[i];
+      }
+    }
+    return null;
+  }
+
+  function correoReservado(rol, correo) {
+    var correoNormal = correo.trim().toLowerCase();
+    if (CUENTAS[rol] && CUENTAS[rol].correo.toLowerCase() === correoNormal) return true;
+    return !!buscarCuentaRegistrada(rol, correoNormal);
+  }
 
   /* ---------------------------------------------------------------- utilidades */
 
@@ -110,7 +159,8 @@
     var valido = true;
     var correo = el.correo.value.trim();
     var clave = el.clave.value;
-    var cuenta = CUENTAS[rolActivo];
+    var cuentaDemo = CUENTAS[rolActivo];
+    var cuentaRegistrada = buscarCuentaRegistrada(rolActivo, correo);
 
     limpiarTodo();
 
@@ -132,7 +182,15 @@
 
     if (!valido) return false;
 
-    if (correo.toLowerCase() !== cuenta.correo) {
+    if (cuentaRegistrada) {
+      if (clave !== cuentaRegistrada.clave) {
+        mostrarError(el.campoClave, el.errorClave, "Contraseña incorrecta. Inténtalo de nuevo.");
+        return false;
+      }
+      return cuentaRegistrada;
+    }
+
+    if (correo.toLowerCase() !== cuentaDemo.correo) {
       mostrarError(
         el.campoCorreo,
         el.errorCorreo,
@@ -141,12 +199,12 @@
       return false;
     }
 
-    if (clave !== cuenta.clave) {
+    if (clave !== cuentaDemo.clave) {
       mostrarError(el.campoClave, el.errorClave, "Contraseña incorrecta. Inténtalo de nuevo.");
       return false;
     }
 
-    return true;
+    return cuentaDemo;
   }
 
   /* ---------------------------------------------------------------- ingreso */
@@ -156,7 +214,7 @@
       rol: rolActivo,
       correo: cuenta.correo,
       nombre: cuenta.nombre,
-      cargo: cuenta.cargo,
+      cargo: cuenta.cargo || (rolActivo === "ciudadano" ? "Ciudadano" : "Empleado"),
       iniciadaEn: new Date().toISOString()
     };
 
@@ -170,13 +228,12 @@
   el.formulario.addEventListener("submit", function (evento) {
     evento.preventDefault();
 
-    if (!validar()) {
+    var cuenta = validar();
+    if (!cuenta) {
       var primerError = el.formulario.querySelector(".campo--error input");
       if (primerError) primerError.focus();
       return;
     }
-
-    var cuenta = CUENTAS[rolActivo];
 
     el.boton.disabled = true;
     el.boton.textContent = "Verificando…";
@@ -205,5 +262,189 @@
     el.nota.textContent =
       "La recuperación de contraseña aún no está habilitada en el prototipo. Usa la cuenta de prueba indicada abajo.";
     el.nota.hidden = false;
+  });
+
+  /* ---------------------------------------------------------- crear cuenta */
+
+  function definicionCampos(rol) {
+    if (rol === "ciudadano") {
+      return [
+        { id: "regNombre", nombre: "nombre", etiqueta: "Nombre", tipo: "text", placeholder: "Tu nombre", autocomplete: "given-name", ancho: false },
+        { id: "regApellido", nombre: "apellido", etiqueta: "Apellido", tipo: "text", placeholder: "Tu apellido", autocomplete: "family-name", ancho: false },
+        { id: "regTelefono", nombre: "telefono", etiqueta: "Teléfono", tipo: "tel", placeholder: "Ej. 300 000 0000", autocomplete: "tel", ancho: false },
+        { id: "regCorreo", nombre: "correo", etiqueta: "Correo", tipo: "email", placeholder: "tu@correo.com", autocomplete: "email", ancho: false },
+        { id: "regDireccion", nombre: "direccion", etiqueta: "Dirección", tipo: "text", placeholder: "Ej. Calle 27 #4-56", autocomplete: "street-address", ancho: true }
+      ];
+    }
+
+    return [
+      { id: "regNombre", nombre: "nombre", etiqueta: "Nombre", tipo: "text", placeholder: "Tu nombre", autocomplete: "given-name", ancho: false },
+      { id: "regApellido", nombre: "apellido", etiqueta: "Apellido", tipo: "text", placeholder: "Tu apellido", autocomplete: "family-name", ancho: false },
+      { id: "regTelefono", nombre: "telefono", etiqueta: "Teléfono", tipo: "tel", placeholder: "Ej. 300 000 0000", autocomplete: "tel", ancho: false },
+      { id: "regCorreo", nombre: "correo", etiqueta: "Correo", tipo: "email", placeholder: "correo@empresa.com", autocomplete: "email", ancho: false },
+      { id: "regCargo", nombre: "cargo", etiqueta: "Cargo", tipo: "text", placeholder: "Ej. Operador de ruta", autocomplete: "organization-title", ancho: true }
+    ];
+  }
+
+  function renderizarCamposCuenta() {
+    var campos = definicionCampos(rolActivo);
+    var html = '<div class="cuenta-grid">';
+
+    campos.forEach(function (campo) {
+      html += '<div class="campo' + (campo.ancho ? " campo--ancho" : "") + '" id="campo-' + campo.id + '">';
+      html += '<label for="' + campo.id + '">' + campo.etiqueta + '</label>';
+      html += '<input id="' + campo.id + '" name="' + campo.nombre + '" type="' + campo.tipo + '" autocomplete="' + campo.autocomplete + '" placeholder="' + campo.placeholder + '" required aria-describedby="error-' + campo.id + '">';
+      html += '<p class="campo__error" id="error-' + campo.id + '" role="alert"></p>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    el.camposCuenta.innerHTML = html;
+  }
+
+  function limpiarErroresCuenta() {
+    var errores = el.formCuenta.querySelectorAll(".campo");
+    errores.forEach(function (campo) {
+      campo.classList.remove("campo--error");
+      var msg = campo.querySelector(".campo__error");
+      if (msg) msg.textContent = "";
+    });
+  }
+
+  function mostrarErrorCuenta(idCampo, mensaje) {
+    var contenedor = document.getElementById("campo-" + idCampo);
+    var error = document.getElementById("error-" + idCampo);
+    if (!contenedor || !error) return;
+    contenedor.classList.add("campo--error");
+    error.textContent = mensaje;
+  }
+
+  function abrirCrearCuenta() {
+    el.dlgCuentaKicker.textContent = rolActivo === "ciudadano" ? "Registro ciudadano" : "Registro de empleado";
+    el.dlgCuentaTitulo.textContent = "Crear cuenta";
+    el.formCuenta.reset();
+    limpiarErroresCuenta();
+    limpiarError(el.campoCuentaClave, el.errorCuentaClave);
+    renderizarCamposCuenta();
+
+    if (typeof el.dlgCuenta.showModal === "function") {
+      el.dlgCuenta.showModal();
+    } else {
+      el.dlgCuenta.setAttribute("open", "");
+    }
+  }
+
+  function cerrarCrearCuenta() {
+    if (typeof el.dlgCuenta.close === "function") {
+      el.dlgCuenta.close();
+    } else {
+      el.dlgCuenta.removeAttribute("open");
+    }
+  }
+
+  function valorCampo(id) {
+    var nodo = document.getElementById(id);
+    return nodo ? nodo.value.trim() : "";
+  }
+
+  function validarCuenta() {
+    limpiarErroresCuenta();
+    var campos = definicionCampos(rolActivo);
+    var valido = true;
+    var primero = null;
+
+    campos.forEach(function (campo) {
+      var valor = valorCampo(campo.id);
+      if (!valor) {
+        mostrarErrorCuenta(campo.id, "Este campo es obligatorio.");
+        if (!primero) primero = document.getElementById(campo.id);
+        valido = false;
+        return;
+      }
+      if (campo.nombre === "correo" && !PATRON_CORREO.test(valor)) {
+        mostrarErrorCuenta(campo.id, "Ingresa un correo electrónico válido.");
+        if (!primero) primero = document.getElementById(campo.id);
+        valido = false;
+      }
+    });
+
+    var clave = el.cuentaClave.value;
+    if (!clave) {
+      mostrarError(el.campoCuentaClave, el.errorCuentaClave, "Crea una contraseña.");
+      if (!primero) primero = el.cuentaClave;
+      valido = false;
+    } else if (clave.length < 6) {
+      mostrarError(el.campoCuentaClave, el.errorCuentaClave, "La contraseña debe tener al menos 6 caracteres.");
+      if (!primero) primero = el.cuentaClave;
+      valido = false;
+    }
+
+    if (!valido) {
+      if (primero) primero.focus();
+      return null;
+    }
+
+    var correo = valorCampo("regCorreo").toLowerCase();
+    if (correoReservado(rolActivo, correo)) {
+      mostrarErrorCuenta("regCorreo", "Ya existe una cuenta con este correo para el rol seleccionado.");
+      document.getElementById("regCorreo").focus();
+      return null;
+    }
+
+    var nombre = valorCampo("regNombre");
+    var apellido = valorCampo("regApellido");
+    var telefono = valorCampo("regTelefono");
+    var direccion = rolActivo === "ciudadano" ? valorCampo("regDireccion") : "";
+    var cargo = rolActivo === "empleado" ? valorCampo("regCargo") : "Ciudadano";
+
+    return {
+      rol: rolActivo,
+      nombre: (nombre + " " + apellido).trim(),
+      telefono: telefono,
+      correo: correo,
+      direccion: direccion,
+      cargo: cargo,
+      clave: clave
+    };
+  }
+
+  el.btnCrearCuenta.addEventListener("click", abrirCrearCuenta);
+  el.dlgCuentaCerrar.addEventListener("click", cerrarCrearCuenta);
+  el.dlgCuentaCancelar.addEventListener("click", cerrarCrearCuenta);
+
+  el.dlgCuenta.addEventListener("click", function (evento) {
+    if (evento.target === el.dlgCuenta) cerrarCrearCuenta();
+  });
+
+  el.dlgCuenta.addEventListener("cancel", function (evento) {
+    evento.preventDefault();
+    cerrarCrearCuenta();
+  });
+
+  el.formCuenta.addEventListener("input", function (evento) {
+    var campo = evento.target.closest(".campo");
+    if (!campo) return;
+    campo.classList.remove("campo--error");
+    var msg = campo.querySelector(".campo__error");
+    if (msg) msg.textContent = "";
+  });
+
+  el.formCuenta.addEventListener("submit", function (evento) {
+    evento.preventDefault();
+
+    var cuenta = validarCuenta();
+    if (!cuenta) return;
+
+    var cuentas = leerCuentas();
+    cuentas.push(cuenta);
+    guardarCuentas(cuentas);
+
+    cerrarCrearCuenta();
+    el.correo.value = cuenta.correo;
+    el.clave.value = "";
+    limpiarTodo();
+    el.nota.textContent = "Cuenta creada correctamente. Ahora puedes iniciar sesión con tu correo y contraseña.";
+    el.nota.hidden = false;
+    el.clave.focus();
   });
 })();

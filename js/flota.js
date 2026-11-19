@@ -1,6 +1,7 @@
 /* ==========================================================================
    Recolecta+ · Vehículos y Flota
-   Prototipo: la flota y las fichas viven en el navegador.
+   Prototipo: la flota, la búsqueda, los filtros y las fichas viven en el
+   navegador (sin persistencia entre recargas).
    ========================================================================== */
 
 (function () {
@@ -41,7 +42,17 @@
     sidebar: document.getElementById("sidebar"),
     velo: document.getElementById("velo"),
     toast: document.getElementById("toast"),
+
     rejilla: document.getElementById("flotaRejilla"),
+    contadorTotal: document.getElementById("flotaTotal"),
+    contadorEnRuta: document.getElementById("flotaEnRuta"),
+    busqueda: document.getElementById("busquedaVehiculo"),
+    filtroEstado: document.getElementById("filtroEstado"),
+    filtroTipo: document.getElementById("filtroTipo"),
+    btnAgregar: document.getElementById("btnAgregarVehiculo"),
+    resultado: document.getElementById("flotaResultado"),
+    vacio: document.getElementById("flotaVacio"),
+
     ficha: document.getElementById("fichaVehiculo"),
     fichaTitulo: document.getElementById("fichaTitulo"),
     fichaTipo: document.getElementById("fichaTipo"),
@@ -49,6 +60,7 @@
     fichaCerrar: document.getElementById("fichaCerrar"),
     fichaCerrarPie: document.getElementById("fichaCerrarPie"),
     fichaVerRuta: document.getElementById("fichaVerRuta"),
+    fichaEditar: document.getElementById("fichaEditar"),
     fichaEstatus: document.getElementById("fichaEstatus"),
     fichaEstatusCaja: document.querySelector(".vf-estatus"),
     fichaPulso: document.querySelector(".vf-pulso"),
@@ -67,7 +79,36 @@
     fichaEstadoGeneral: document.getElementById("fichaEstadoGeneral"),
     fichaUltimoMantenimiento: document.getElementById("fichaUltimoMantenimiento"),
     fichaProximoMantenimiento: document.getElementById("fichaProximoMantenimiento"),
-    fichaProgramar: document.getElementById("fichaProgramar")
+    fichaProgramar: document.getElementById("fichaProgramar"),
+
+    dlg: document.getElementById("dlgVehiculo"),
+    frm: document.getElementById("frmVehiculo"),
+    dlgKicker: document.getElementById("dlgVehiculoKicker"),
+    dlgTitulo: document.getElementById("dlgVehiculoTitulo"),
+    dlgCerrar: document.getElementById("dlgVehiculoCerrar"),
+    dlgCancelar: document.getElementById("dlgVehiculoCancelar"),
+    dlgGuardar: document.getElementById("dlgVehiculoGuardar"),
+    errorVId: document.getElementById("errorVId")
+  };
+
+  var campos = {
+    id: document.getElementById("vId"),
+    tipo: document.getElementById("vTipo"),
+    estado: document.getElementById("vEstado"),
+    combustible: document.getElementById("vCombustible"),
+    conductor: document.getElementById("vConductor"),
+    ubicacion: document.getElementById("vUbicacion"),
+    ruta: document.getElementById("vRuta"),
+    ultima: document.getElementById("vUltima"),
+    proxima: document.getElementById("vProxima"),
+    progreso: document.getElementById("vProgreso"),
+    operador: document.getElementById("vOperador"),
+    asistente: document.getElementById("vAsistente"),
+    horario: document.getElementById("vHorario"),
+    mantEstado: document.getElementById("vMantEstado"),
+    ultimoMant: document.getElementById("vUltimoMant"),
+    proximoMant: document.getElementById("vProximoMant"),
+    puedeProgramar: document.getElementById("vPuedeProgramar")
   };
 
   /* --------------------------------------------------------------- utilidades */
@@ -96,6 +137,24 @@
     return (partes[0].charAt(0) + partes[1].charAt(0)).toUpperCase();
   }
 
+  function textoEstado(estado) {
+    if (estado === "ruta") return "EN RUTA";
+    if (estado === "disponible") return "DISPONIBLE";
+    return "MANTENIMIENTO";
+  }
+
+  function limitarNumero(valor, min, max, porDefecto) {
+    var numero = parseInt(valor, 10);
+    if (isNaN(numero)) numero = porDefecto;
+    if (numero < min) return min;
+    if (numero > max) return max;
+    return numero;
+  }
+
+  function normalizar(texto) {
+    return String(texto || "").toLowerCase();
+  }
+
   /* ------------------------------------------------------------ cabecera */
 
   (function pintarUsuario() {
@@ -109,12 +168,11 @@
 
   /* ------------------------------------------------------- datos de la flota */
 
-  var VEHICULOS = [
+  var vehiculos = [
     {
       id: "URB-041",
       tipo: "Camión compactador",
       estado: "ruta",
-      estadoTexto: "EN RUTA",
       conductor: "Carlos Mendoza",
       ubicacion: "R-1 · Centro Norte",
       combustible: 72,
@@ -126,7 +184,6 @@
       asistente: "Andrés Pérez",
       horario: "6:00 - 14:00",
       mantEstado: "Óptimo",
-      mantRevision: false,
       ultimoMant: "10/10/2026 · Preventivo · Aceite y filtros",
       proximoMant: "Estimado en 1500 km",
       puedeProgramar: true
@@ -135,7 +192,6 @@
       id: "URB-023",
       tipo: "Camión compactador",
       estado: "disponible",
-      estadoTexto: "DISPONIBLE",
       conductor: "Andrés Pérez",
       ubicacion: "R-2 · Sur Boston",
       combustible: 88,
@@ -147,7 +203,6 @@
       asistente: "Laura Gómez",
       horario: "14:00 - 22:00",
       mantEstado: "Óptimo",
-      mantRevision: false,
       ultimoMant: "18/09/2026 · Preventivo · Frenos",
       proximoMant: "Estimado en 3000 km",
       puedeProgramar: true
@@ -156,7 +211,6 @@
       id: "URB-037",
       tipo: "Volqueta recolectora",
       estado: "ruta",
-      estadoTexto: "EN RUTA",
       conductor: "Juan Ríos",
       ubicacion: "R-3 · Mocarí",
       combustible: 61,
@@ -168,7 +222,6 @@
       asistente: "Diego Salas",
       horario: "6:00 - 14:00",
       mantEstado: "Óptimo",
-      mantRevision: false,
       ultimoMant: "02/10/2026 · Preventivo · Llantas",
       proximoMant: "Estimado en 1200 km",
       puedeProgramar: true
@@ -177,7 +230,6 @@
       id: "URB-018",
       tipo: "Camión de apoyo",
       estado: "mantenimiento",
-      estadoTexto: "MANTENIMIENTO",
       conductor: "Sin asignar",
       ubicacion: "Patio operativo",
       combustible: 45,
@@ -189,12 +241,13 @@
       asistente: "—",
       horario: "Sin turno",
       mantEstado: "En revisión",
-      mantRevision: true,
       ultimoMant: "28/10/2026 · Correctivo · Sistema hidráulico",
       proximoMant: "Programado 05/11/2026",
       puedeProgramar: false
     }
   ];
+
+  var idEditando = null;
 
   var ICONO_CAMION =
     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
@@ -206,10 +259,60 @@
     return "estado--" + estado;
   }
 
+  /* --------------------------------------------- búsqueda, filtros y resumen */
+
+  function buscarVehiculo(id) {
+    for (var i = 0; i < vehiculos.length; i++) {
+      if (vehiculos[i].id === id) return vehiculos[i];
+    }
+    return null;
+  }
+
+  function vehiculosFiltrados() {
+    var q = normalizar(el.busqueda.value).trim();
+    var estado = el.filtroEstado.value;
+    var tipo = el.filtroTipo.value;
+
+    return vehiculos.filter(function (v) {
+      if (estado !== "todos" && v.estado !== estado) return false;
+      if (tipo !== "todos" && v.tipo !== tipo) return false;
+
+      if (!q) return true;
+
+      var texto = [v.id, v.tipo, v.conductor, v.operador, v.ubicacion, v.ruta, v.asistente]
+        .join(" ")
+        .toLowerCase();
+
+      return texto.indexOf(q) !== -1;
+    });
+  }
+
+  function actualizarResumen() {
+    var enRuta = vehiculos.filter(function (v) { return v.estado === "ruta"; }).length;
+    el.contadorTotal.textContent = String(vehiculos.length);
+    el.contadorEnRuta.textContent = String(enRuta);
+  }
+
   /* ------------------------------------------------------ tarjetas de flota */
 
   function pintarFlota() {
-    el.rejilla.innerHTML = VEHICULOS.map(function (vehiculo) {
+    var lista = vehiculosFiltrados();
+    actualizarResumen();
+
+    if (!lista.length) {
+      el.rejilla.innerHTML = "";
+      el.vacio.hidden = false;
+      el.resultado.hidden = true;
+      return;
+    }
+
+    el.vacio.hidden = true;
+    el.resultado.hidden = lista.length === vehiculos.length;
+    if (!el.resultado.hidden) {
+      el.resultado.textContent = "Mostrando " + lista.length + " de " + vehiculos.length + " vehículos.";
+    }
+
+    el.rejilla.innerHTML = lista.map(function (vehiculo) {
       return (
         '<article class="flota-card">' +
           '<header class="flota-card__cabecera">' +
@@ -219,7 +322,7 @@
               "<p>" + vehiculo.tipo + "</p>" +
             "</div>" +
             '<span class="estado ' + claseEstado(vehiculo.estado) + '">' +
-              vehiculo.estadoTexto +
+              textoEstado(vehiculo.estado) +
             "</span>" +
           "</header>" +
 
@@ -246,45 +349,40 @@
 
   /* ----------------------------------------------------- ficha del vehículo */
 
-  function buscarVehiculo(id) {
-    for (var i = 0; i < VEHICULOS.length; i++) {
-      if (VEHICULOS[i].id === id) return VEHICULOS[i];
-    }
-    return null;
-  }
-
   function abrirFicha(vehiculo) {
+    var mantRevision = vehiculo.mantEstado === "En revisión";
+
     el.fichaTitulo.firstChild.nodeValue = vehiculo.id + " ";
     el.fichaTipo.textContent = vehiculo.tipo;
 
     el.fichaEstado.className = "estado " + claseEstado(vehiculo.estado);
-    el.fichaEstado.textContent = vehiculo.estadoTexto;
+    el.fichaEstado.textContent = textoEstado(vehiculo.estado);
 
     el.fichaEstatusCaja.className = "vf-estatus vf-estatus--" + vehiculo.estado;
-    el.fichaEstatus.textContent = vehiculo.estadoTexto;
+    el.fichaEstatus.textContent = textoEstado(vehiculo.estado);
     el.fichaPulso.classList.toggle("is-oculto", vehiculo.estado !== "ruta");
 
     el.fichaAvatar.textContent = iniciales(vehiculo.conductor);
     el.fichaConductor.textContent = vehiculo.conductor;
     el.fichaUbicacion.textContent = vehiculo.ubicacion;
 
-    el.fichaRutaTitulo.textContent = vehiculo.ruta;
-    el.fichaUltima.textContent = vehiculo.ultima;
-    el.fichaProxima.textContent = vehiculo.proxima;
+    el.fichaRutaTitulo.textContent = vehiculo.ruta || "Sin ruta asignada";
+    el.fichaUltima.textContent = vehiculo.ultima || "—";
+    el.fichaProxima.textContent = vehiculo.proxima || "—";
     el.fichaProgreso.textContent = vehiculo.progreso + "%";
     el.fichaProgresoBarra.style.width = vehiculo.progreso + "%";
 
-    el.fichaOperador.textContent = vehiculo.operador;
-    el.fichaAsistente.textContent = vehiculo.asistente;
+    el.fichaOperador.textContent = vehiculo.operador || "Sin asignar";
+    el.fichaAsistente.textContent = vehiculo.asistente || "—";
     el.fichaAsistenteAvatar.textContent = iniciales(vehiculo.asistente);
-    el.fichaHorario.textContent = vehiculo.horario;
+    el.fichaHorario.textContent = vehiculo.horario || "Sin turno";
 
-    el.fichaEstadoGeneral.textContent = vehiculo.mantEstado;
-    el.fichaEstadoGeneral.className = vehiculo.mantRevision
+    el.fichaEstadoGeneral.textContent = vehiculo.mantEstado || "Óptimo";
+    el.fichaEstadoGeneral.className = mantRevision
       ? "vf-badge vf-badge--revision"
       : "vf-badge";
-    el.fichaUltimoMantenimiento.textContent = vehiculo.ultimoMant;
-    el.fichaProximoMantenimiento.textContent = vehiculo.proximoMant;
+    el.fichaUltimoMantenimiento.textContent = vehiculo.ultimoMant || "Sin registro";
+    el.fichaProximoMantenimiento.textContent = vehiculo.proximoMant || "Sin definir";
 
     el.fichaProgramar.hidden = !vehiculo.puedeProgramar;
     el.fichaProgramar.disabled = false;
@@ -292,6 +390,10 @@
     el.ficha.dataset.vehiculo = vehiculo.id;
 
     el.ficha.showModal();
+  }
+
+  function cerrarFicha() {
+    if (el.ficha.open) el.ficha.close();
   }
 
   el.rejilla.addEventListener("click", function (evento) {
@@ -302,10 +404,6 @@
     if (vehiculo) abrirFicha(vehiculo);
   });
 
-  function cerrarFicha() {
-    if (el.ficha.open) el.ficha.close();
-  }
-
   el.fichaCerrar.addEventListener("click", cerrarFicha);
   el.fichaCerrarPie.addEventListener("click", cerrarFicha);
 
@@ -315,8 +413,13 @@
 
   el.fichaProgramar.addEventListener("click", function () {
     var id = el.ficha.dataset.vehiculo;
-    el.fichaProgramar.textContent = "Programado ✓";
-    el.fichaProgramar.disabled = true;
+    var vehiculo = buscarVehiculo(id);
+    if (!vehiculo) return;
+
+    vehiculo.puedeProgramar = false;
+    vehiculo.proximoMant = "Programado · pendiente de taller";
+    el.fichaProgramar.hidden = true;
+    el.fichaProximoMantenimiento.textContent = vehiculo.proximoMant;
     avisar("Mantenimiento programado para " + id + ". Se notificó al equipo de taller.");
   });
 
@@ -324,9 +427,163 @@
     if (evento.target === el.ficha) cerrarFicha();
   });
 
-  el.ficha.addEventListener("close", function () {
-    el.fichaProgramar.disabled = false;
+  /* --------------------------------------------------- agregar / editar */
+
+  function limpiarErrorFormulario() {
+    el.errorVId.textContent = "";
+    campos.id.classList.remove("is-error");
+  }
+
+  function cargarFormulario(vehiculo) {
+    campos.id.value = vehiculo.id || "";
+    campos.tipo.value = vehiculo.tipo || "";
+    campos.estado.value = vehiculo.estado || "disponible";
+    campos.combustible.value = vehiculo.combustible != null ? vehiculo.combustible : 100;
+    campos.conductor.value = vehiculo.conductor || "";
+    campos.ubicacion.value = vehiculo.ubicacion || "";
+    campos.ruta.value = vehiculo.ruta || "";
+    campos.ultima.value = vehiculo.ultima || "";
+    campos.proxima.value = vehiculo.proxima || "";
+    campos.progreso.value = vehiculo.progreso != null ? vehiculo.progreso : 0;
+    campos.operador.value = vehiculo.operador || "";
+    campos.asistente.value = vehiculo.asistente || "";
+    campos.horario.value = vehiculo.horario || "";
+    campos.mantEstado.value = vehiculo.mantEstado || "Óptimo";
+    campos.ultimoMant.value = vehiculo.ultimoMant || "";
+    campos.proximoMant.value = vehiculo.proximoMant || "";
+    campos.puedeProgramar.checked = vehiculo.puedeProgramar !== false;
+  }
+
+  function abrirFormularioAgregar() {
+    idEditando = null;
+    limpiarErrorFormulario();
+    el.frm.reset();
+    campos.estado.value = "disponible";
+    campos.combustible.value = 100;
+    campos.progreso.value = 0;
+    campos.mantEstado.value = "Óptimo";
+    campos.puedeProgramar.checked = true;
+    campos.id.disabled = false;
+
+    el.dlgKicker.textContent = "Nuevo vehículo";
+    el.dlgTitulo.textContent = "Agregar vehículo";
+    el.dlgGuardar.textContent = "Guardar vehículo";
+
+    el.dlg.showModal();
+  }
+
+  function abrirFormularioEditar(vehiculo) {
+    idEditando = vehiculo.id;
+    limpiarErrorFormulario();
+    cargarFormulario(vehiculo);
+    campos.id.disabled = true;
+
+    el.dlgKicker.textContent = "Actualizar datos";
+    el.dlgTitulo.textContent = "Editar vehículo " + vehiculo.id;
+    el.dlgGuardar.textContent = "Actualizar vehículo";
+
+    el.dlg.showModal();
+  }
+
+  function cerrarFormulario() {
+    if (el.dlg.open) el.dlg.close();
+  }
+
+  function leerFormulario() {
+    var id = campos.id.value.trim().toUpperCase();
+
+    return {
+      id: id,
+      tipo: campos.tipo.value,
+      estado: campos.estado.value,
+      combustible: limitarNumero(campos.combustible.value, 0, 100, 100),
+      conductor: campos.conductor.value.trim() || "Sin asignar",
+      ubicacion: campos.ubicacion.value.trim() || "Sin ubicación",
+      ruta: campos.ruta.value.trim() || "Sin ruta asignada",
+      ultima: campos.ultima.value.trim() || "—",
+      proxima: campos.proxima.value.trim() || "—",
+      progreso: limitarNumero(campos.progreso.value, 0, 100, 0),
+      operador: campos.operador.value.trim() || campos.conductor.value.trim() || "Sin asignar",
+      asistente: campos.asistente.value.trim() || "—",
+      horario: campos.horario.value.trim() || "Sin turno",
+      mantEstado: campos.mantEstado.value || "Óptimo",
+      ultimoMant: campos.ultimoMant.value.trim() || "Sin registro",
+      proximoMant: campos.proximoMant.value.trim() || "Sin definir",
+      puedeProgramar: campos.puedeProgramar.checked
+    };
+  }
+
+  function validarFormulario(datos) {
+    limpiarErrorFormulario();
+
+    if (!datos.id) {
+      el.errorVId.textContent = "Ingresa el código del vehículo.";
+      campos.id.classList.add("is-error");
+      campos.id.focus();
+      return false;
+    }
+
+    if (!idEditando) {
+      var existente = buscarVehiculo(datos.id);
+      if (existente) {
+        el.errorVId.textContent = "Ya existe un vehículo con ese código.";
+        campos.id.classList.add("is-error");
+        campos.id.focus();
+        return false;
+      }
+    }
+
+    if (!datos.tipo) {
+      campos.tipo.focus();
+      return false;
+    }
+
+    return true;
+  }
+
+  el.btnAgregar.addEventListener("click", abrirFormularioAgregar);
+
+  el.fichaEditar.addEventListener("click", function () {
+    var vehiculo = buscarVehiculo(el.ficha.dataset.vehiculo);
+    if (!vehiculo) return;
+    cerrarFicha();
+    abrirFormularioEditar(vehiculo);
   });
+
+  el.dlgCerrar.addEventListener("click", cerrarFormulario);
+  el.dlgCancelar.addEventListener("click", cerrarFormulario);
+
+  el.dlg.addEventListener("click", function (evento) {
+    if (evento.target === el.dlg) cerrarFormulario();
+  });
+
+  el.frm.addEventListener("submit", function (evento) {
+    evento.preventDefault();
+
+    var datos = leerFormulario();
+    if (!validarFormulario(datos)) return;
+
+    if (idEditando) {
+      var indice = -1;
+      for (var i = 0; i < vehiculos.length; i++) {
+        if (vehiculos[i].id === idEditando) { indice = i; break; }
+      }
+      if (indice !== -1) vehiculos[indice] = datos;
+      avisar("Vehículo " + datos.id + " actualizado correctamente.");
+    } else {
+      vehiculos.unshift(datos);
+      avisar("Vehículo " + datos.id + " agregado a la flota.");
+    }
+
+    cerrarFormulario();
+    pintarFlota();
+  });
+
+  /* --------------------------------------------------------------- filtros */
+
+  el.busqueda.addEventListener("input", pintarFlota);
+  el.filtroEstado.addEventListener("change", pintarFlota);
+  el.filtroTipo.addEventListener("change", pintarFlota);
 
   /* --------------------------------------------------------------- alertas */
 
@@ -377,7 +634,6 @@
     var boton = evento.target.closest("[data-modulo]");
     if (!boton) return;
 
-    // Los enlaces del menú navegan solos.
     if (boton.tagName === "A") return;
 
     var modulo = boton.dataset.modulo;

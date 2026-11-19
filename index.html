@@ -84,12 +84,51 @@
           <p class="nota" id="nota" hidden></p>
 
           <p class="demo">Cuenta de prueba: <strong id="demoCorreo">operador@urbaser.co</strong> · <strong>recolecta123</strong></p>
+
+          <p class="registro">
+            ¿No tienes cuenta?
+            <button type="button" class="registro__btn" id="btnCrearCuenta">Crear cuenta</button>
+          </p>
         </form>
       </div>
     </section>
 
   </main>
 
-  <script src="js/login.js"></script>
+  <dialog class="cuenta-dialogo" id="dlgCuenta" aria-labelledby="dlgCuentaTitulo">
+    <form class="cuenta-dialogo__form" id="formCuenta" novalidate>
+      <header class="cuenta-dialogo__cabecera">
+        <div>
+          <p class="cuenta-dialogo__kicker" id="dlgCuentaKicker">Registro ciudadano</p>
+          <h2 id="dlgCuentaTitulo">Crear cuenta</h2>
+          <p class="cuenta-dialogo__bajada">Completa tus datos para registrarte.</p>
+        </div>
+        <button type="button" class="cuenta-dialogo__cerrar" id="dlgCuentaCerrar" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="cuenta-dialogo__cuerpo">
+        <div id="camposCuenta"></div>
+
+        <div class="campo" id="campoCuentaClave">
+          <label for="cuentaClave">Contraseña</label>
+          <input id="cuentaClave" name="clave" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required aria-describedby="errorCuentaClave">
+          <p class="campo__error" id="errorCuentaClave" role="alert"></p>
+        </div>
+
+        <p class="cuenta-dialogo__nota">Tus datos se guardan en este navegador como parte del prototipo.</p>
+      </div>
+
+      <footer class="cuenta-dialogo__pie">
+        <button type="button" class="cuenta-btn" id="dlgCuentaCancelar">Cancelar</button>
+        <button type="submit" class="cuenta-btn cuenta-btn--primario" id="dlgCuentaGuardar">Crear cuenta</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="js/login.js?v=2"></script>
 </body>
 </html>
